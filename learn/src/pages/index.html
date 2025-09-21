@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU网络安全CTF竞赛平台 - 专业的网络安全技能竞赛平台">
+    <meta name="keywords" content="CTF, 网络安全, 竞赛平台, 信息安全, 黑客技术">
+    <title>QHU-CTF - QHU网络安全CTF竞赛平台</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+    <link rel="stylesheet" href="../assets/css/theme-system.css">
+    <link rel="stylesheet" href="../assets/css/responsive-styles.css">
+    
+    <style>
+        /* 首页特定样式 */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* 统计数据区域 */
+        .stats-section {
+            background: white;
+            padding: 3rem 0;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* 功能特色区域 */
+        .features-section {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 最新动态区域 */
+        .news-section {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .news-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .news-date {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-title {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .news-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <h1><a href="index.html">QHU-CTF</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="core/challenges.html">题目</a></li>
+                    <li><a href="core/scoreboard.html">排行榜</a></li>
+                    <li><a href="info/help.html">帮助</a></li>
+                    <li><a href="core/login.html" class="btn-login">登录</a></li>
+                </ul>
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">QHU-CTF</h1>
+                <p class="hero-subtitle">专业的网络安全技能竞赛平台，提升你的安全技术水平</p>
+                <div class="hero-buttons">
+                    <a href="core/challenges.html" class="btn-hero btn-primary">开始挑战</a>
+                    <a href="core/login.html" class="btn-hero btn-secondary">立即注册</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 统计数据 -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="active-users-count">156</div>
+                        <div class="stat-label">活跃用户</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="challenges-count">42</div>
+                        <div class="stat-label">挑战题目</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="solves-count">1,234</div>
+                        <div class="stat-label">解题次数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="online-users-count">89</div>
+                        <div class="stat-label">在线用户</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能特色 -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2 class="section-title">平台特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3 class="feature-title">多样化题目</h3>
+                        <p class="feature-desc">涵盖Web安全、逆向工程、密码学、取证分析等多个领域的专业题目</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3 class="feature-title">实时排行榜</h3>
+                        <p class="feature-desc">实时更新的排行榜系统，激发竞争意识，提升学习动力</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">详细统计</h3>
+                        <p class="feature-desc">完整的解题记录和统计分析，帮助你了解自己的技术水平</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最新动态 -->
+        <section class="news-section">
+            <div class="news-container">
+                <h2 class="section-title">最新动态</h2>
+                <div class="news-grid" id="news-container">
+                    <div class="news-card">
+                        <div class="news-date">2025-01-20</div>
+                        <h3 class="news-title">新增Web安全挑战题目</h3>
+                        <p class="news-desc">新增了5道Web安全相关的挑战题目，涵盖SQL注入、XSS攻击等常见漏洞类型。</p>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-date">2025-01-18</div>
+                        <h3 class="news-title">平台功能优化更新</h3>
+                        <p class="news-desc">优化了用户界面体验，修复了已知问题，提升了系统稳定性。</p>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-date">2025-01-15</div>
+                        <h3 class="news-title">CTF竞赛活动预告</h3>
+                        <p class="news-desc">即将举办的校内CTF竞赛活动，欢迎所有同学积极参与，展示你的技术实力。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2025 QHU-CTF. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="../assets/js/common-scripts.js"></script>
+    <script src="../assets/js/theme-manager.js"></script>
+    <script src="../assets/js/data-loader.js"></script>
+    <script>
+        // 初始化数据加载器并更新首页数据
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataLoader = new DataLoader();
+            dataLoader.init();
+        });
+    </script>
+</body>
+</html>

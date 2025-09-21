@@ -1,0 +1,123 @@
+{
+  "name": "qhu-ctf-learn",
+  "version": "2.0.0",
+  "description": "QHU-CTF Learn Platform - A modern CTF learning platform frontend",
+  "main": "src/pages/core/index.html",
+  "scripts": {
+    "start": "node tools/dev/dev-server.js",
+    "dev": "node tools/dev/dev-server.js",
+    "build": "node tools/build/build.js",
+    "test": "node tools/test/run-tests.js",
+    "lint": "eslint src/ tools/ --ext .js,.html,.css",
+    "lint:fix": "eslint src/ tools/ --ext .js,.html,.css --fix",
+    "format": "prettier --write \"src/**/*.{js,html,css,json}\"",
+    "validate": "npm run lint && npm run test",
+    "clean": "rimraf dist/ node_modules/.cache/",
+    "serve": "http-server dist/ -p 8080 -c-1",
+    "analyze": "node tools/analyze/bundle-analyzer.js",
+    "docs": "jsdoc src/ -d docs/api/",
+    "deploy:dev": "node tools/deploy/deploy.js deploy development",
+    "deploy:staging": "node tools/deploy/deploy.js deploy staging",
+    "deploy:prod": "node tools/deploy/deploy.js deploy production",
+    "rollback:dev": "node tools/deploy/deploy.js rollback development",
+    "rollback:staging": "node tools/deploy/deploy.js rollback staging",
+    "rollback:prod": "node tools/deploy/deploy.js rollback production",
+    "backup:list": "node tools/deploy/deploy.js list",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "ctf",
+    "cybersecurity",
+    "learning",
+    "platform",
+    "frontend",
+    "education",
+    "security",
+    "competition"
+  ],
+  "author": {
+    "name": "sunsky",
+    "email": "sunsky@qhu-ctf.com",
+    "url": "https://github.com/sunsky"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/your-repo/qhu-ctf-learn#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-repo/qhu-ctf-learn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-repo/qhu-ctf-learn/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "Chrome >= 80",
+    "Firefox >= 75",
+    "Safari >= 13",
+    "Edge >= 80"
+  ],
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "live-server": "^1.2.2",
+    "rimraf": "^3.0.2",
+    "prettier": "^2.8.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.0",
+    "jquery": "^3.6.0",
+    "font-awesome": "^4.7.0"
+  },
+  "optionalDependencies": {
+    "http-server": "^14.0.0",
+    "serve": "^14.0.0"
+  },
+  "config": {
+    "port": 8000,
+    "host": "localhost",
+    "open": true,
+    "watch": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{html,css,md}": [
+      "prettier --write"
+    ]
+  },
+  "files": [
+    "src/",
+    "docs/",
+    "tools/",
+    "*.json",
+    "*.md",
+    "LICENSE"
+  ],
+  "directories": {
+    "doc": "docs",
+    "test": "tools/test"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/your-username"
+  }
+}

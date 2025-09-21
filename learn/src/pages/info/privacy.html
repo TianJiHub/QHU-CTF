@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU网络安全CTF竞赛平台 - QHU-CTF">
+    <meta name="keywords" content="CTF, 隐私政策, 数据保护, 个人信息, 网络安全">
+    <title>QHU-CTF - QHU网络安全CTF竞赛平台</title>
+    
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* 导航栏样式 */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .navbar h1 a {
+            text-decoration: none;
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .navbar h1 a:hover {
+            color: #764ba2;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-menu a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white !important;
+            padding: 0.7rem 1.5rem !important;
+            border-radius: 25px;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb-nav {
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .breadcrumb-item {
+            color: #666;
+        }
+
+        .breadcrumb-item:not(:last-child)::after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: #999;
+        }
+
+        .breadcrumb-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 隐私政策样式 */
+        .privacy-policy {
+            padding: 0;
+        }
+
+        .policy-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+        }
+
+        .policy-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .policy-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .last-updated {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* 目录导航 */
+        .policy-toc {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .toc-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .toc-item {
+            padding: 0.5rem 0;
+        }
+
+        .toc-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* 政策内容区域 */
+        .policy-content {
+            margin-bottom: 3rem;
+        }
+
+        .policy-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(102, 126, 234, 0.02);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .section-content h3 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .section-content ul, .section-content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 重要提示框 */
+        .important-notice {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .notice-title {
+            color: #f39c12;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notice-content {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 联系信息卡片 */
+        .contact-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .contact-title {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .contact-desc {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .contact-button:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* 页脚样式 */
+        .site-footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            text-align: center;
+            color: #95a5a6;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .navbar-container {
+                padding: 0 1rem;
+            }
+            
+            .main-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .toc-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-toggle {
+                display: block;
+            }
+            
+            .navbar-menu {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+            
+            .navbar-menu.active {
+                display: flex;
+            }
+            
+            .navbar-menu li {
+                width: 100%;
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+            
+            .policy-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .policy-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-container {
+                padding: 0 1rem;
+                min-height: 60px;
+            }
+            
+            .main-content {
+                margin: 0.5rem;
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            
+            .policy-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .policy-title {
+                font-size: 1.8rem;
+            }
+            
+            .policy-section {
+                padding: 1rem;
+            }
+            
+            .back-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* 焦点样式 */
+        a:focus, button:focus, input:focus, select:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* 深色主题支持 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                color: #ecf0f1;
+            }
+            
+            .site-header {
+                background: rgba(44, 62, 80, 0.95);
+            }
+            
+            .main-content {
+                background: #34495e;
+                color: #ecf0f1;
+            }
+            
+            .policy-section {
+                background: rgba(102, 126, 234, 0.1);
+            }
+            
+            .contact-info {
+                background: #2c3e50;
+                color: #ecf0f1;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/responsive-styles.css">
+    <link rel="stylesheet" href="../assets/css/theme-system.css">
+    <meta name="author" content="sunsky">
+    <meta property="og:title" content="QHU-CTF">
+    <meta property="og:description" content="QHU网络安全CTF竞赛平台">
+</head>
+<body class="light-theme">
+    <!-- 页面头部 -->
+    <header class="site-header" role="banner">
+            <!-- 导航栏 -->
+    <nav class="navbar" role="navigation" aria-label="主导航">
+        <div class="nav-container">
+            <a href="../core/index.html" class="nav-brand" aria-label="QHUCTF首页">🛡️ QHUCTF</a>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="切换导航菜单" aria-expanded="false">☰</button>
+            <ul class="nav-menu" id="navMenu" role="menubar">
+                <li role="none"><a href="../core/index.html" class="nav-link" role="menuitem">首页</a></li>
+                <li role="none"><a href="../core/challenges.html" class="nav-link" role="menuitem">题目</a></li>
+                <li role="none"><a href="scoreboard.html" class="nav-link" role="menuitem">排行榜</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">团队</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">用户</a></li>
+                <li role="none"><a href="../core/login.html" class="nav-link" role="menuitem">登录</a></li>
+                <li role="none"><button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换深浅主题">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content" role="main">
+        <div class="privacy-content">
+            <div class="container">
+                <h2>隐私政策</h2>
+                <p>我们重视您的隐私保护...</p>
+            </div>
+        </div>
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb-nav" aria-label="面包屑导航">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item">
+                    <a href="../core/index.html" class="breadcrumb-link">首页</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">隐私政策</li>
+            </ol>
+        </nav>
+
+        <!-- 隐私政策内容 -->
+        <article class="privacy-policy">
+            <div class="policy-container">
+                <!-- 政策头部 -->
+                <header class="policy-header">
+                    <h1 class="policy-title">隐私政策</h1>
+                    <div class="policy-meta">
+                        <p class="update-date">
+                            <time datetime="2025/9/19">最后更新：2025年1月10日</time>
+                        </p>
+                        <p class="effective-date">
+                            <time datetime="2025/9/19">生效日期：2025年1月10日</time>
+                        </p>
+                    </div>
+                    <div class="policy-summary">
+                        <p>QHUCTF竞赛平台（以下简称"我们"）非常重视用户的隐私保护。本隐私政策说明了我们如何收集、使用、存储和保护您的个人信息。</p>
+                    </div>
+                </header>
+
+                <!-- 目录导航 -->
+                <nav class="policy-toc" aria-label="政策目录">
+                    <h2 class="toc-title">目录</h2>
+                    <ol class="toc-list">
+                        <li><a href="#section-1" class="toc-link">信息收集</a></li>
+                        <li><a href="#section-2" class="toc-link">信息使用</a></li>
+                        <li><a href="#section-3" class="toc-link">信息共享</a></li>
+                        <li><a href="#section-4" class="toc-link">数据安全</a></li>
+                        <li><a href="#section-5" class="toc-link">用户权利</a></li>
+                        <li><a href="#section-6" class="toc-link">Cookie政策</a></li>
+                        <li><a href="#section-7" class="toc-link">未成年人保护</a></li>
+                        <li><a href="#section-8" class="toc-link">政策更新</a></li>
+                        <li><a href="#section-9" class="toc-link">联系我们</a></li>
+                    </ol>
+                </nav>
+
+                <!-- 政策内容 -->
+                <div class="policy-content">
+                    <!-- 第1节：信息收集 -->
+                    <section id="section-1" class="policy-section">
+                        <h2 class="section-title">1. 信息收集</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">1.1 我们收集的信息类型</h3>
+                            <div class="info-types">
+                                <div class="info-type-card">
+                                    <h4 class="info-type-title">📝 账户信息</h4>
+                                    <ul class="info-list">
+                                        <li>用户名和密码</li>
+                                        <li>电子邮箱地址</li>
+                                        <li>学校或组织信息</li>
+                                        <li>个人资料和头像</li>
+                                    </ul>
+                                </div>
+                                <div class="info-type-card">
+                                    <h4 class="info-type-title">🎯 活动信息</h4>
+                                    <ul class="info-list">
+                                        <li>题目解答记录</li>
+                                        <li>提交的Flag和代码</li>
+                                        <li>竞赛参与情况</li>
+                                        <li>成绩和排名数据</li>
+                                    </ul>
+                                </div>
+                                <div class="info-type-card">
+                                    <h4 class="info-type-title">💻 技术信息</h4>
+                                    <ul class="info-list">
+                                        <li>IP地址和设备信息</li>
+                                        <li>浏览器类型和版本</li>
+                                        <li>操作系统信息</li>
+                                        <li>访问时间和页面记录</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">1.2 信息收集方式</h3>
+                            <div class="collection-methods">
+                                <div class="method-item">
+                                    <strong class="method-title">直接收集：</strong>
+                                    <span class="method-desc">您主动提供的注册信息、个人资料等</span>
+                                </div>
+                                <div class="method-item">
+                                    <strong class="method-title">自动收集：</strong>
+                                    <span class="method-desc">通过Cookie、日志文件等技术自动收集</span>
+                                </div>
+                                <div class="method-item">
+                                    <strong class="method-title">第三方收集：</strong>
+                                    <span class="method-desc">通过合作伙伴或公开渠道获得的信息</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第2节：信息使用 -->
+                    <section id="section-2" class="policy-section">
+                        <h2 class="section-title">2. 信息使用</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">2.1 使用目的</h3>
+                            <div class="usage-purposes">
+                                <div class="purpose-card">
+                                    <div class="purpose-icon" aria-hidden="true">🔐</div>
+                                    <h4 class="purpose-title">账户管理</h4>
+                                    <p class="purpose-desc">创建和维护您的用户账户，提供身份验证服务</p>
+                                </div>
+                                <div class="purpose-card">
+                                    <div class="purpose-icon" aria-hidden="true">🎯</div>
+                                    <h4 class="purpose-title">服务提供</h4>
+                                    <p class="purpose-desc">提供CTF题目、竞赛服务和个性化内容</p>
+                                </div>
+                                <div class="purpose-card">
+                                    <div class="purpose-icon" aria-hidden="true">📊</div>
+                                    <h4 class="purpose-title">数据分析</h4>
+                                    <p class="purpose-desc">分析用户行为，改进平台功能和用户体验</p>
+                                </div>
+                                <div class="purpose-card">
+                                    <div class="purpose-icon" aria-hidden="true">📧</div>
+                                    <h4 class="purpose-title">通信联系</h4>
+                                    <p class="purpose-desc">发送重要通知、竞赛信息和技术支持</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">2.2 法律依据</h3>
+                            <ul class="legal-basis">
+                                <li><strong>合同履行：</strong>为履行与您的服务协议</li>
+                                <li><strong>合法权益：</strong>基于我们的合法商业利益</li>
+                                <li><strong>用户同意：</strong>基于您的明确同意</li>
+                                <li><strong>法律义务：</strong>遵守适用的法律法规</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- 第3节：信息共享 -->
+                    <section id="section-3" class="policy-section">
+                        <h2 class="section-title">3. 信息共享</h2>
+                        <div class="section-content">
+                            <div class="sharing-principle">
+                                <h3 class="principle-title">🔒 基本原则</h3>
+                                <p class="principle-desc">我们不会出售、出租或以其他方式向第三方披露您的个人信息，除非符合以下情况：</p>
+                            </div>
+
+                            <div class="sharing-scenarios">
+                                <div class="scenario-card">
+                                    <h4 class="scenario-title">✅ 经您同意</h4>
+                                    <p class="scenario-desc">获得您的明确同意后，与第三方共享特定信息</p>
+                                </div>
+                                <div class="scenario-card">
+                                    <h4 class="scenario-title">⚖️ 法律要求</h4>
+                                    <p class="scenario-desc">根据法律法规、法院命令或政府要求披露信息</p>
+                                </div>
+                                <div class="scenario-card">
+                                    <h4 class="scenario-title">🤝 服务提供</h4>
+                                    <p class="scenario-desc">与可信的服务提供商共享，以提供技术支持和服务</p>
+                                </div>
+                                <div class="scenario-card">
+                                    <h4 class="scenario-title">🛡️ 安全保护</h4>
+                                    <p class="scenario-desc">为保护用户、平台或公众的安全和权益</p>
+                                </div>
+                            </div>
+
+                            <div class="public-info">
+                                <h3 class="subsection-title">3.1 公开信息</h3>
+                                <p>以下信息可能会在平台上公开显示：</p>
+                                <ul class="public-list">
+                                    <li>用户名和头像</li>
+                                    <li>竞赛成绩和排名</li>
+                                    <li>解题记录和统计</li>
+                                    <li>公开的个人资料信息</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第4节：数据安全 -->
+                    <section id="section-4" class="policy-section">
+                        <h2 class="section-title">4. 数据安全</h2>
+                        <div class="section-content">
+                            <div class="security-measures">
+                                <h3 class="subsection-title">4.1 安全措施</h3>
+                                <div class="security-grid">
+                                    <div class="security-item">
+                                        <div class="security-icon" aria-hidden="true">🔐</div>
+                                        <h4 class="security-title">数据加密</h4>
+                                        <p class="security-desc">使用SSL/TLS加密传输，敏感数据加密存储</p>
+                                    </div>
+                                    <div class="security-item">
+                                        <div class="security-icon" aria-hidden="true">🔥</div>
+                                        <h4 class="security-title">防火墙保护</h4>
+                                        <p class="security-desc">部署多层防火墙，防止未授权访问</p>
+                                    </div>
+                                    <div class="security-item">
+                                        <div class="security-icon" aria-hidden="true">👥</div>
+                                        <h4 class="security-title">访问控制</h4>
+                                        <p class="security-desc">严格的权限管理，最小化数据访问权限</p>
+                                    </div>
+                                    <div class="security-item">
+                                        <div class="security-icon" aria-hidden="true">📊</div>
+                                        <h4 class="security-title">安全监控</h4>
+                                        <p class="security-desc">24/7安全监控，及时发现和响应威胁</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="data-retention">
+                                <h3 class="subsection-title">4.2 数据保留</h3>
+                                <div class="retention-policy">
+                                    <div class="retention-item">
+                                        <strong>账户数据：</strong>账户存续期间及注销后30天
+                                    </div>
+                                    <div class="retention-item">
+                                        <strong>活动记录：</strong>保留3年用于统计分析
+                                    </div>
+                                    <div class="retention-item">
+                                        <strong>日志数据：</strong>保留1年用于安全审计
+                                    </div>
+                                    <div class="retention-item">
+                                        <strong>备份数据：</strong>根据备份策略定期清理
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第5节：用户权利 -->
+                    <section id="section-5" class="policy-section">
+                        <h2 class="section-title">5. 用户权利</h2>
+                        <div class="section-content">
+                            <div class="user-rights">
+                                <div class="right-card">
+                                    <div class="right-icon" aria-hidden="true">👁️</div>
+                                    <h4 class="right-title">查看权</h4>
+                                    <p class="right-desc">您有权查看我们收集的关于您的个人信息</p>
+                                </div>
+                                <div class="right-card">
+                                    <div class="right-icon" aria-hidden="true">✏️</div>
+                                    <h4 class="right-title">更正权</h4>
+                                    <p class="right-desc">您有权要求更正不准确或不完整的个人信息</p>
+                                </div>
+                                <div class="right-card">
+                                    <div class="right-icon" aria-hidden="true">🗑️</div>
+                                    <h4 class="right-title">删除权</h4>
+                                    <p class="right-desc">在特定情况下，您有权要求删除个人信息</p>
+                                </div>
+                                <div class="right-card">
+                                    <div class="right-icon" aria-hidden="true">📤</div>
+                                    <h4 class="right-title">携带权</h4>
+                                    <p class="right-desc">您有权以结构化格式获取个人数据副本</p>
+                                </div>
+                                <div class="right-card">
+                                    <div class="right-icon" aria-hidden="true">⛔</div>
+                                    <h4 class="right-title">限制权</h4>
+                                    <p class="right-desc">您有权要求限制对个人信息的处理</p>
+                                </div>
+                                <div class="right-card">
+                                    <div class="right-icon" aria-hidden="true">🚫</div>
+                                    <h4 class="right-title">反对权</h4>
+                                    <p class="right-desc">您有权反对基于合法利益的数据处理</p>
+                                </div>
+                            </div>
+
+                            <div class="rights-exercise">
+                                <h3 class="subsection-title">5.1 如何行使权利</h3>
+                                <p>如需行使上述权利，请通过以下方式联系我们：</p>
+                                <ul class="contact-methods">
+                                    <li>📧 发送邮件至：<a href="mailto:privacy@qhuctf.com">privacy@qhuctf.com</a></li>
+                                    <li>📝 在个人中心提交申请</li>
+                                    <li>📞 联系客服热线</li>
+                                </ul>
+                                <p class="response-time">我们将在收到请求后30天内回复您的申请。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第6节：Cookie政策 -->
+                    <section id="section-6" class="policy-section">
+                        <h2 class="section-title">6. Cookie政策</h2>
+                        <div class="section-content">
+                            <div class="cookie-intro">
+                                <p>我们使用Cookie和类似技术来改善您的浏览体验，提供个性化内容和分析网站使用情况。</p>
+                            </div>
+
+                            <div class="cookie-types">
+                                <div class="cookie-type">
+                                    <h4 class="cookie-title">🔧 必要Cookie</h4>
+                                    <p class="cookie-desc">维持网站基本功能，如用户登录状态和安全验证</p>
+                                    <span class="cookie-status essential">必需</span>
+                                </div>
+                                <div class="cookie-type">
+                                    <h4 class="cookie-title">📊 分析Cookie</h4>
+                                    <p class="cookie-desc">帮助我们了解用户如何使用网站，改进用户体验</p>
+                                    <span class="cookie-status optional">可选</span>
+                                </div>
+                                <div class="cookie-type">
+                                    <h4 class="cookie-title">🎯 功能Cookie</h4>
+                                    <p class="cookie-desc">记住您的偏好设置，提供个性化功能</p>
+                                    <span class="cookie-status optional">可选</span>
+                                </div>
+                            </div>
+
+                            <div class="cookie-control">
+                                <h3 class="subsection-title">6.1 Cookie管理</h3>
+                                <p>您可以通过以下方式管理Cookie：</p>
+                                <ul class="cookie-management">
+                                    <li>在浏览器设置中禁用或删除Cookie</li>
+                                    <li>使用我们的Cookie偏好中心</li>
+                                    <li>选择退出特定的分析服务</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第7节：未成年人保护 -->
+                    <section id="section-7" class="policy-section">
+                        <h2 class="section-title">7. 未成年人保护</h2>
+                        <div class="section-content">
+                            <div class="minor-protection">
+                                <div class="protection-notice">
+                                    <h3 class="notice-title">👶 特别保护</h3>
+                                    <p class="notice-desc">我们特别重视未成年人的隐私保护，采取额外的安全措施。</p>
+                                </div>
+
+                                <div class="protection-measures">
+                                    <div class="measure-item">
+                                        <h4 class="measure-title">年龄验证</h4>
+                                        <p class="measure-desc">注册时需要提供年龄信息，未满18岁需要监护人同意</p>
+                                    </div>
+                                    <div class="measure-item">
+                                        <h4 class="measure-title">信息限制</h4>
+                                        <p class="measure-desc">限制收集未成年人的敏感个人信息</p>
+                                    </div>
+                                    <div class="measure-item">
+                                        <h4 class="measure-title">监护人权利</h4>
+                                        <p class="measure-desc">监护人有权查看、更正或删除未成年人的信息</p>
+                                    </div>
+                                </div>
+
+                                <div class="guardian-contact">
+                                    <h3 class="subsection-title">7.1 监护人联系</h3>
+                                    <p>如果您是未成年用户的监护人，可以通过以下方式联系我们：</p>
+                                    <p>📧 邮箱：<a href="mailto:guardian@qhuctf.com">guardian@qhuctf.com</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第8节：政策更新 -->
+                    <section id="section-8" class="policy-section">
+                        <h2 class="section-title">8. 政策更新</h2>
+                        <div class="section-content">
+                            <div class="update-policy">
+                                <h3 class="subsection-title">8.1 更新通知</h3>
+                                <p>我们可能会不时更新本隐私政策。重大变更时，我们将通过以下方式通知您：</p>
+                                <ul class="notification-methods">
+                                    <li>📧 发送邮件通知</li>
+                                    <li>📢 在网站显著位置发布公告</li>
+                                    <li>📱 通过应用内通知</li>
+                                    <li>📄 更新政策页面并标注修改日期</li>
+                                </ul>
+
+                                <div class="update-timeline">
+                                    <h3 class="subsection-title">8.2 生效时间</h3>
+                                    <p>更新后的隐私政策将在发布后30天生效。继续使用我们的服务即表示您接受更新后的政策。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第9节：联系我们 -->
+                    <section id="section-9" class="policy-section">
+                        <h2 class="section-title">9. 联系我们</h2>
+                        <div class="section-content">
+                            <div class="contact-info">
+                                <p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
+                                
+                                <div class="contact-grid">
+                                    <div class="contact-card">
+                                        <div class="contact-icon" aria-hidden="true">📧</div>
+                                        <h4 class="contact-title">邮箱联系</h4>
+                                        <p class="contact-detail">
+                                            <a href="mailto:privacy@qhuctf.com">privacy@qhuctf.com</a>
+                                        </p>
+                                    </div>
+                                    <div class="contact-card">
+                                        <div class="contact-icon" aria-hidden="true">🌐</div>
+                                        <h4 class="contact-title">在线反馈</h4>
+                                        <p class="contact-detail">
+                                            <a href="../info/help.html">帮助中心</a>
+                                        </p>
+                                    </div>
+                                    <div class="contact-card">
+                                        <div class="contact-icon" aria-hidden="true">📍</div>
+                                        <h4 class="contact-title">通信地址</h4>
+                                        <p class="contact-detail">QHUCTF竞赛平台<br>数据保护办公室</p>
+                                    </div>
+                                </div>
+
+                                <div class="response-commitment">
+                                    <h3 class="subsection-title">9.1 回复承诺</h3>
+                                    <p>我们承诺在收到您的咨询后：</p>
+                                    <ul class="commitment-list">
+                                        <li>⏰ 24小时内确认收到</li>
+                                        <li>📅 7个工作日内提供初步回复</li>
+                                        <li>✅ 30天内解决您的问题</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 政策确认 -->
+                <div class="policy-acknowledgment">
+                    <div class="acknowledgment-card">
+                        <h3 class="acknowledgment-title">📋 政策确认</h3>
+                        <p class="acknowledgment-text">
+                            通过使用QHUCTF竞赛平台，您确认已阅读、理解并同意本隐私政策的所有条款。
+                        </p>
+                        <div class="acknowledgment-actions">
+                            <a href="../core/index.html" class="btn btn-primary">返回首页</a>
+                            <a href="terms.html" class="btn btn-secondary">查看服务条款</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- 快速导航 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">快速导航</h3>
+                    <ul class="footer-links">
+                        <li><a href="../core/index.html" class="footer-link">首页</a></li>
+                        <li><a href="../core/challenges.html" class="footer-link">题目列表</a></li>
+                        <li><a href="scoreboard.html" class="footer-link">排行榜</a></li>
+                        <li><a href="../core/login.html" class="footer-link">用户登录</a></li>
+                    </ul>
+                </div>
+
+                <!-- 法律信息 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">法律信息</h3>
+                    <ul class="footer-links">
+                        <li><a href="terms.html" class="footer-link">服务条款</a></li>
+                        <li><a href="privacy.html" class="footer-link" aria-current="page">隐私政策</a></li>
+                        <li><a href="../info/help.html" class="footer-link">帮助中心</a></li>
+                        <li><a href="mailto:legal@qhuctf.com" class="footer-link">法律咨询</a></li>
+                    </ul>
+                </div>
+
+                <!-- 联系我们 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">联系我们</h3>
+                    <div class="contact-info">
+                        <p class="contact-item">
+                            <span class="contact-icon" aria-hidden="true">📧</span>
+                            <a href="mailto:privacy@qhuctf.com" class="contact-link">privacy@qhuctf.com</a>
+                        </p>
+                        <p class="contact-item">
+                            <span class="contact-icon" aria-hidden="true">🌐</span>
+                            <span class="contact-text">QHUCTF竞赛平台</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权信息 -->
+            <div class="footer-bottom">
+                <p class="copyright">
+                    &copy; 2025 QHUCTF竞赛平台. 保留所有权利.
+                </p>
+                <div class="footer-meta">
+                    <a href="terms.html" class="footer-link">服务条款</a>
+                    <span class="separator">|</span>
+                    <a href="privacy.html" class="footer-link" aria-current="page">隐私政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

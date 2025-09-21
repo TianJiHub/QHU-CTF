@@ -1,0 +1,18 @@
+{
+  "name": "QHU-CTF Learn Module",
+  "version": "2.0.0",
+  "description": "QHU-CTF 竞赛平台学习模块",
+  "author": "sunsky",
+  "structure": {
+    "src": "源代码目录",
+    "tools": "开发工具目录",
+    "docs": "文档目录",
+    "reports": "报告目录",
+    "dist": "构建输出目录"
+  },
+  "scripts": {
+    "build": "node tools/build/apply-styles.js",
+    "test": "node tools/test/check-interactions.js",
+    "update-docs": "node tools/docs/update-docs.js"
+  }
+}

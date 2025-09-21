@@ -1,0 +1,241 @@
+{
+  "challenges": [
+    {
+      "id": "web-001",
+      "title": "SQL注入基础",
+      "category": "Web",
+      "difficulty": "Easy",
+      "points": 100,
+      "description": "这是一个经典的SQL注入漏洞练习。目标网站存在用户登录功能，请尝试绕过身份验证。",
+      "tags": ["SQL注入", "Web安全", "身份验证绕过"],
+      "author": "sunsky",
+      "created_at": "2024-01-15",
+      "solved_count": 156,
+      "total_attempts": 234,
+      "hints": [
+        "尝试在用户名字段输入特殊字符",
+        "观察错误信息，它们可能泄露数据库结构",
+        "考虑使用注释符号来绕过密码验证"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": true,
+      "files": [
+        {
+          "name": "source.php",
+          "url": "/challenges/web-001/source.php",
+          "description": "网站源代码"
+        }
+      ]
+    },
+    {
+      "id": "crypto-001",
+      "title": "凯撒密码解密",
+      "category": "Crypto",
+      "difficulty": "Easy",
+      "points": 50,
+      "description": "古老的凯撒密码，据说凯撒大帝用它来保护军事机密。你能破解这段密文吗？\n\n密文：WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ",
+      "tags": ["凯撒密码", "古典密码", "频率分析"],
+      "author": "sunsky",
+      "created_at": "2024-01-10",
+      "solved_count": 203,
+      "total_attempts": 267,
+      "hints": [
+        "凯撒密码是一种替换密码",
+        "尝试不同的偏移量",
+        "英文中最常见的字母是E"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": true,
+      "files": []
+    },
+    {
+      "id": "pwn-001",
+      "title": "栈溢出入门",
+      "category": "Pwn",
+      "difficulty": "Medium",
+      "points": 200,
+      "description": "这是一个存在栈溢出漏洞的C程序。你需要利用这个漏洞来获取shell权限。程序运行在远程服务器上。",
+      "tags": ["栈溢出", "缓冲区溢出", "ROP"],
+      "author": "sunsky",
+      "created_at": "2024-01-20",
+      "solved_count": 89,
+      "total_attempts": 178,
+      "hints": [
+        "检查程序的保护机制",
+        "找到溢出点的偏移量",
+        "考虑使用ret2libc技术"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": false,
+      "files": [
+        {
+          "name": "vuln",
+          "url": "/challenges/pwn-001/vuln",
+          "description": "存在漏洞的二进制文件"
+        },
+        {
+          "name": "vuln.c",
+          "url": "/challenges/pwn-001/vuln.c",
+          "description": "源代码文件"
+        }
+      ],
+      "remote_info": {
+        "host": "pwn.qhu-ctf.com",
+        "port": 9001
+      }
+    },
+    {
+      "id": "reverse-001",
+      "title": "简单逆向",
+      "category": "Reverse",
+      "difficulty": "Easy",
+      "points": 150,
+      "description": "这是一个简单的逆向工程题目。程序会要求输入正确的密码，请分析程序逻辑找出正确答案。",
+      "tags": ["逆向工程", "静态分析", "字符串分析"],
+      "author": "sunsky",
+      "created_at": "2024-01-12",
+      "solved_count": 134,
+      "total_attempts": 189,
+      "hints": [
+        "使用strings命令查看程序中的字符串",
+        "尝试使用IDA或Ghidra进行静态分析",
+        "关注程序的比较操作"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": true,
+      "files": [
+        {
+          "name": "crackme",
+          "url": "/challenges/reverse-001/crackme",
+          "description": "需要逆向的程序"
+        }
+      ]
+    },
+    {
+      "id": "forensics-001",
+      "title": "图片隐写",
+      "category": "Forensics",
+      "difficulty": "Easy",
+      "points": 100,
+      "description": "这张看似普通的图片中隐藏着秘密信息。使用合适的工具来发现隐藏的flag。",
+      "tags": ["隐写术", "图片分析", "LSB"],
+      "author": "sunsky",
+      "created_at": "2024-01-18",
+      "solved_count": 167,
+      "total_attempts": 201,
+      "hints": [
+        "尝试使用binwalk检查文件",
+        "考虑LSB隐写技术",
+        "检查图片的EXIF信息"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": true,
+      "files": [
+        {
+          "name": "hidden.png",
+          "url": "/challenges/forensics-001/hidden.png",
+          "description": "包含隐藏信息的图片"
+        }
+      ]
+    },
+    {
+      "id": "web-002",
+      "title": "XSS漏洞利用",
+      "category": "Web",
+      "difficulty": "Medium",
+      "points": 150,
+      "description": "这个网站存在跨站脚本攻击(XSS)漏洞。你需要构造恶意脚本来获取管理员的cookie。",
+      "tags": ["XSS", "跨站脚本", "Cookie窃取"],
+      "author": "sunsky",
+      "created_at": "2024-01-25",
+      "solved_count": 78,
+      "total_attempts": 145,
+      "hints": [
+        "寻找用户输入点",
+        "测试不同的XSS payload",
+        "考虑绕过过滤器的方法"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": false,
+      "files": []
+    },
+    {
+      "id": "crypto-002",
+      "title": "RSA加密挑战",
+      "category": "Crypto",
+      "difficulty": "Hard",
+      "points": 300,
+      "description": "这是一个RSA加密挑战。给定公钥和密文，你需要找到解密的方法。注意：这个RSA实现可能存在一些弱点。",
+      "tags": ["RSA", "公钥密码", "数论"],
+      "author": "sunsky",
+      "created_at": "2024-01-30",
+      "solved_count": 23,
+      "total_attempts": 67,
+      "hints": [
+        "检查RSA参数的特殊性质",
+        "考虑小指数攻击",
+        "尝试分解模数n"
+      ],
+      "flag_format": "QHU{...}",
+      "writeup_available": false,
+      "files": [
+        {
+          "name": "public_key.pem",
+          "url": "/challenges/crypto-002/public_key.pem",
+          "description": "RSA公钥文件"
+        },
+        {
+          "name": "ciphertext.txt",
+          "url": "/challenges/crypto-002/ciphertext.txt",
+          "description": "加密后的密文"
+        }
+      ]
+    },
+    {
+      "id": "misc-001",
+      "title": "编码解码大挑战",
+      "category": "Misc",
+      "difficulty": "Easy",
+      "points": 75,
+      "description": "这里有一串经过多重编码的字符串，你需要逐层解码来获得最终的flag。\n\n编码字符串：NTI2ZjY0NzM3Mzc0NzI2OTZlNjc=",
+      "flag": "flag{decoding_master}",
+      "hints": [
+        "这是Base64编码",
+        "解码后可能还有其他编码方式",
+        "最终结果是一个字符串"
+      ],
+      "files": [],
+      "tags": ["encoding", "base64", "hex"],
+      "author": "sunsky",
+      "created_at": "2025-01-10T10:00:00Z",
+      "solved_count": 45,
+      "total_attempts": 78
+    },
+    {
+      "id": "misc-002", 
+      "title": "隐写术入门",
+      "category": "Misc",
+      "difficulty": "Medium",
+      "points": 150,
+      "description": "这张图片看起来很普通，但是里面隐藏着秘密。你能找到隐藏的flag吗？",
+      "flag": "flag{steganography_is_fun}",
+      "hints": [
+        "LSB隐写是常见的图片隐写方法",
+        "可以尝试使用stegsolve工具",
+        "注意图片的RGB通道"
+      ],
+      "files": [
+        {
+          "name": "secret.png",
+          "url": "/challenges/misc-002/secret.png",
+          "description": "包含隐藏信息的图片"
+        }
+      ],
+      "tags": ["steganography", "image", "lsb"],
+      "author": "sunsky",
+      "created_at": "2025-01-10T11:00:00Z",
+      "solved_count": 23,
+      "total_attempts": 67
+    }
+  ]
+}

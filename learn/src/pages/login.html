@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU-CTF 用户登录 - 安全登录您的账户">
+    <meta name="keywords" content="CTF, 登录, 用户账户, 安全认证">
+    <title>用户登录 - QHU-CTF</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+    <link rel="stylesheet" href="../assets/css/theme-system.css">
+    <link rel="stylesheet" href="../assets/css/responsive-styles.css">
+    
+    <style>
+        /* 登录页面特定样式 */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+
+        .login-left {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-brand {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .login-tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .login-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .login-features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .login-features li::before {
+            content: "✓";
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .login-right {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #764ba2;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: #666;
+        }
+
+        .login-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e5e9;
+            z-index: 1;
+        }
+
+        .login-divider span {
+            background: white;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            padding: 0.8rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            color: #764ba2;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .back-home {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+                margin: 1rem;
+                max-width: none;
+            }
+
+            .login-left {
+                padding: 2rem;
+                min-height: 200px;
+            }
+
+            .login-right {
+                padding: 2rem;
+            }
+
+            .login-brand {
+                font-size: 2rem;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-toggle,
+            .back-home {
+                position: absolute;
+            }
+        }
+
+        /* 错误提示样式 */
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid #fcc;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid #cfc;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* 加载状态 */
+        .login-btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .login-btn.loading::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回首页按钮 -->
+    <a href="index.html" class="back-home">← 返回首页</a>
+    
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <!-- 左侧品牌区域 -->
+        <div class="login-left">
+            <div class="login-logo">🛡️</div>
+            <h1 class="login-brand">QHU-CTF</h1>
+            <p class="login-tagline">网络安全竞赛平台</p>
+            <ul class="login-features">
+                <li>丰富的CTF题目库</li>
+                <li>实时排行榜系统</li>
+                <li>专业的技术支持</li>
+                <li>安全的竞赛环境</li>
+            </ul>
+        </div>
+
+        <!-- 右侧登录表单 -->
+        <div class="login-right">
+            <div class="login-header">
+                <h2 class="login-title">欢迎回来</h2>
+                <p class="login-subtitle">请登录您的账户继续参与竞赛</p>
+            </div>
+
+            <!-- 错误/成功消息 -->
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <!-- 登录表单 -->
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">用户名或邮箱</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="请输入用户名或邮箱"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">密码</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="请输入密码"
+                        required
+                    >
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <span>记住我</span>
+                    </label>
+                    <a href="#" class="forgot-password">忘记密码？</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    登录
+                </button>
+            </form>
+
+            <!-- 分割线 -->
+            <div class="login-divider">
+                <span>或者</span>
+            </div>
+
+            <!-- 社交登录 -->
+            <div class="social-login">
+                <a href="#" class="social-btn">
+                    <span>📧</span>
+                    <span>邮箱注册</span>
+                </a>
+                <a href="#" class="social-btn">
+                    <span>🎓</span>
+                    <span>学生认证</span>
+                </a>
+            </div>
+
+            <!-- 注册链接 -->
+            <div class="register-link">
+                还没有账户？ <a href="register.html">立即注册</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../assets/js/common-scripts.js"></script>
+    <script src="../assets/js/theme-manager.js"></script>
+    
+    <script>
+        // 登录页面特定的JavaScript功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // 表单提交处理
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                // 隐藏之前的消息
+                hideMessages();
+
+                // 验证输入
+                if (!username || !password) {
+                    showError('请填写完整的登录信息');
+                    return;
+                }
+
+                // 显示加载状态
+                showLoading(true);
+
+                // 模拟登录请求
+                setTimeout(() => {
+                    // 这里应该是实际的登录API调用
+                    if (username === 'admin' && password === 'admin') {
+                        showSuccess('登录成功！正在跳转...');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        showError('用户名或密码错误，请重试');
+                    }
+                    showLoading(false);
+                }, 2000);
+            });
+
+            // 显示错误消息
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+
+            // 显示成功消息
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+
+            // 隐藏所有消息
+            function hideMessages() {
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+            }
+
+            // 显示/隐藏加载状态
+            function showLoading(loading) {
+                if (loading) {
+                    loginBtn.classList.add('loading');
+                    loginBtn.disabled = true;
+                    loginBtn.textContent = '登录中...';
+                } else {
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = '登录';
+                }
+            }
+
+            // 输入框焦点效果
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+
+            // 社交登录按钮点击处理
+            const socialBtns = document.querySelectorAll('.social-btn');
+            socialBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const type = this.textContent.trim();
+                    showError(`${type}功能暂未开放，敬请期待！`);
+                });
+            });
+
+            // 忘记密码链接处理
+            const forgotPassword = document.querySelector('.forgot-password');
+            forgotPassword.addEventListener('click', function(e) {
+                e.preventDefault();
+                showError('密码重置功能暂未开放，请联系管理员');
+            });
+
+            // 键盘快捷键支持
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

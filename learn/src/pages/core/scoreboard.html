@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU-CTF 排行榜 - 查看竞赛排名和积分统计">
+    <meta name="keywords" content="CTF, 排行榜, 竞赛排名, 积分统计">
+    <title>排行榜 - QHU-CTF</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="../../assets/css/common-styles.css">
+    <link rel="stylesheet" href="../../assets/css/theme-system.css">
+    <link rel="stylesheet" href="../../assets/css/responsive-styles.css">
+    
+    <style>
+        /* 排行榜页面特定样式 */
+        .scoreboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .scoreboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .scoreboard-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 统计卡片 */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* 过滤器区域 */
+        .filters-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* 排行榜表格 */
+        .scoreboard-table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .rank-cell {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .rank-1 {
+            color: #ffd700;
+        }
+
+        .rank-2 {
+            color: #c0c0c0;
+        }
+
+        .rank-3 {
+            color: #cd7f32;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-school {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .score-cell {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .solved-count {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .last-solve {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 奖牌图标 */
+        .medal {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <h1><a href="../index.html">QHU-CTF</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">首页</a></li>
+                    <li><a href="challenges.html">题目</a></li>
+                    <li><a href="scoreboard.html" class="active">排行榜</a></li>
+                    <li><a href="../info/help.html">帮助</a></li>
+                    <li><a href="login.html" class="btn-login">登录</a></li>
+                </ul>
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 页面头部 -->
+    <section class="scoreboard-header">
+        <div class="container">
+            <h1 class="scoreboard-title">排行榜</h1>
+            <p class="scoreboard-subtitle">查看当前竞赛排名和积分统计</p>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <!-- 统计卡片 -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">156</div>
+                <div class="stat-label">参赛选手</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-number">42</div>
+                <div class="stat-label">活跃题目</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number">1,234</div>
+                <div class="stat-label">总解题数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-number">89</div>
+                <div class="stat-label">在线用户</div>
+            </div>
+        </div>
+
+        <!-- 过滤器 -->
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">排序方式</label>
+                    <select class="filter-select" id="sortFilter">
+                        <option value="score">按积分排序</option>
+                        <option value="solved">按解题数排序</option>
+                        <option value="time">按最后解题时间排序</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">学校筛选</label>
+                    <select class="filter-select" id="schoolFilter">
+                        <option value="">所有学校</option>
+                        <option value="qhu">清华大学</option>
+                        <option value="pku">北京大学</option>
+                        <option value="other">其他学校</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">显示数量</label>
+                    <select class="filter-select" id="limitFilter">
+                        <option value="20">前20名</option>
+                        <option value="50">前50名</option>
+                        <option value="100">前100名</option>
+                        <option value="all">全部</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 排行榜表格 -->
+        <div class="scoreboard-table">
+            <div class="table-header">
+                <h2 class="table-title">竞赛排行榜</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>用户</th>
+                            <th>积分</th>
+                            <th>解题数</th>
+                            <th>最后解题时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 第一名 -->
+                        <tr>
+                            <td class="rank-cell rank-1">
+                                <span class="medal">🥇</span>1
+                            </td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">A</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Alice_Security</div>
+                                        <div class="user-school">清华大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">2,450</td>
+                            <td class="solved-count">18/42</td>
+                            <td class="last-solve">2小时前</td>
+                        </tr>
+                        
+                        <!-- 第二名 -->
+                        <tr>
+                            <td class="rank-cell rank-2">
+                                <span class="medal">🥈</span>2
+                            </td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">B</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Bob_Hacker</div>
+                                        <div class="user-school">北京大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">2,380</td>
+                            <td class="solved-count">17/42</td>
+                            <td class="last-solve">4小时前</td>
+                        </tr>
+                        
+                        <!-- 第三名 -->
+                        <tr>
+                            <td class="rank-cell rank-3">
+                                <span class="medal">🥉</span>3
+                            </td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">C</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Charlie_Crypto</div>
+                                        <div class="user-school">清华大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">2,200</td>
+                            <td class="solved-count">16/42</td>
+                            <td class="last-solve">1天前</td>
+                        </tr>
+                        
+                        <!-- 其他排名 -->
+                        <tr>
+                            <td class="rank-cell">4</td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">D</div>
+                                    <div class="user-details">
+                                        <div class="user-name">David_Web</div>
+                                        <div class="user-school">北京大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">1,950</td>
+                            <td class="solved-count">14/42</td>
+                            <td class="last-solve">6小时前</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="rank-cell">5</td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">E</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Eve_Reverse</div>
+                                        <div class="user-school">清华大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">1,800</td>
+                            <td class="solved-count">13/42</td>
+                            <td class="last-solve">12小时前</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="rank-cell">6</td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">F</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Frank_Forensics</div>
+                                        <div class="user-school">其他学校</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">1,650</td>
+                            <td class="solved-count">12/42</td>
+                            <td class="last-solve">1天前</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="rank-cell">7</td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">G</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Grace_Pwn</div>
+                                        <div class="user-school">清华大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">1,500</td>
+                            <td class="solved-count">11/42</td>
+                            <td class="last-solve">8小时前</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="rank-cell">8</td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">H</div>
+                                    <div class="user-details">
+                                        <div class="user-name">Henry_Misc</div>
+                                        <div class="user-school">北京大学</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">1,350</td>
+                            <td class="solved-count">10/42</td>
+                            <td class="last-solve">2天前</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn" disabled>上一页</button>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">3</a>
+            <span>...</span>
+            <a href="#" class="page-btn">8</a>
+            <button class="page-btn">下一页</button>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2025 QHU-CTF. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="../../assets/js/common-scripts.js"></script>
+    <script src="../../assets/js/theme-manager.js"></script>
+    
+    <script>
+        // 排行榜页面特定的JavaScript功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortFilter = document.getElementById('sortFilter');
+            const schoolFilter = document.getElementById('schoolFilter');
+            const limitFilter = document.getElementById('limitFilter');
+
+            // 模拟排序功能
+            sortFilter.addEventListener('change', function() {
+                console.log('排序方式改变:', this.value);
+                // 这里可以添加实际的排序逻辑
+            });
+
+            schoolFilter.addEventListener('change', function() {
+                console.log('学校筛选改变:', this.value);
+                // 这里可以添加实际的筛选逻辑
+            });
+
+            limitFilter.addEventListener('change', function() {
+                console.log('显示数量改变:', this.value);
+                // 这里可以添加实际的限制逻辑
+            });
+
+            // 实时更新功能（模拟）
+            setInterval(function() {
+                // 这里可以添加实时更新排行榜的逻辑
+                console.log('更新排行榜数据...');
+            }, 30000); // 每30秒更新一次
+        });
+    </script>
+</body>
+</html>

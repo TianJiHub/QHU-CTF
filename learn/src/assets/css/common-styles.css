@@ -1,0 +1,573 @@
+/* 
+ * QHUCTF 通用样式文件
+ * Author: sunsky
+ * 功能：统一导航栏、响应式设计、主题切换
+ * 使用方法：在HTML页面中引入此CSS文件
+ * 更新时间: 2025/9/19
+ */
+
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.nav-brand:hover {
+    color: #5a6fd8;
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #667eea;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-toggle:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+    margin: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-link:hover {
+    color: #667eea;
+}
+
+.nav-link.active {
+    color: #667eea;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #667eea;
+    border-radius: 1px;
+}
+
+/* 主题切换按钮 */
+.theme-toggle {
+    background: none;
+    border: 2px solid #667eea;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.theme-toggle:hover {
+    background: #667eea;
+    transform: scale(1.1);
+}
+
+/* 主要内容区域 */
+.main-content {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 响应式设计 - 平板设备 */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .nav-toggle {
+        display: block;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+        padding: 0.5rem 0;
+    }
+    
+    .nav-link {
+        display: block;
+        padding: 1rem;
+        width: 100%;
+    }
+    
+    .theme-toggle {
+        margin: 1rem auto 0;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+}
+
+/* 响应式设计 - 手机设备 */
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 0 0.5rem;
+    }
+    
+    .nav-brand {
+        font-size: 1.3rem;
+    }
+    
+    .main-content {
+        padding: 0.5rem;
+        margin-top: 70px;
+    }
+}
+
+/* 深色主题样式 */
+body.dark-theme {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e0e6ed;
+}
+
+body.dark-theme .navbar {
+    background: rgba(26, 26, 46, 0.95);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+body.dark-theme .nav-brand {
+    color: #8ecfc9;
+}
+
+body.dark-theme .nav-brand:hover {
+    color: #7bc4bd;
+}
+
+body.dark-theme .nav-link {
+    color: #e0e6ed;
+}
+
+body.dark-theme .nav-link:hover {
+    color: #8ecfc9;
+}
+
+body.dark-theme .nav-link.active {
+    color: #8ecfc9;
+}
+
+body.dark-theme .nav-link.active::after {
+    background: #8ecfc9;
+}
+
+body.dark-theme .nav-toggle {
+    color: #8ecfc9;
+}
+
+body.dark-theme .nav-toggle:hover {
+    background-color: rgba(142, 207, 201, 0.1);
+}
+
+body.dark-theme .theme-toggle {
+    border-color: #8ecfc9;
+    color: #8ecfc9;
+}
+
+body.dark-theme .theme-toggle:hover {
+    background: #8ecfc9;
+    color: #1a1a2e;
+}
+
+body.dark-theme .nav-menu {
+    background: rgba(26, 26, 46, 0.98);
+}
+
+/* 通用按钮样式 */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* 深色主题按钮样式 */
+body.dark-theme .btn-primary {
+    background: linear-gradient(135deg, #8ecfc9 0%, #7bc4bd 100%);
+    color: #1a1a2e;
+}
+
+body.dark-theme .btn-secondary {
+    color: #8ecfc9;
+    border-color: #8ecfc9;
+}
+
+body.dark-theme .btn-secondary:hover {
+    background: #8ecfc9;
+    color: #1a1a2e;
+}
+
+/* 页面标题样式 */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+body.dark-theme .page-title {
+    color: #e0e6ed;
+}
+
+body.dark-theme .page-subtitle {
+    color: #b0b7c3;
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 无障碍访问 */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #667eea;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1001;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* 响应式图片 */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 表单元素样式 */
+input, select, textarea {
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* 焦点样式 */
+*:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+body.dark-theme *:focus {
+    outline-color: #8ecfc9;
+}
+
+/* 卡片组件深色主题 */
+body.dark-theme .card,
+body.dark-theme .stat-card,
+body.dark-theme .challenge-card {
+    background: rgba(42, 42, 66, 0.8);
+    border: 1px solid rgba(142, 207, 201, 0.2);
+    color: #e0e6ed;
+}
+
+body.dark-theme .card:hover,
+body.dark-theme .stat-card:hover,
+body.dark-theme .challenge-card:hover {
+    border-color: rgba(142, 207, 201, 0.4);
+    box-shadow: 0 8px 32px rgba(142, 207, 201, 0.1);
+}
+
+/* 统计数据深色主题 */
+body.dark-theme .stat-value {
+    color: #8ecfc9;
+}
+
+body.dark-theme .stat-label {
+    color: #b0b7c3;
+}
+
+body.dark-theme .stat-icon {
+    filter: brightness(1.2);
+}
+
+body.dark-theme progress {
+    background-color: rgba(142, 207, 201, 0.2);
+}
+
+body.dark-theme progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #8ecfc9, #7bc4bd);
+}
+
+body.dark-theme progress::-moz-progress-bar {
+    background: linear-gradient(90deg, #8ecfc9, #7bc4bd);
+}
+
+/* 挑战题目卡片深色主题 */
+body.dark-theme .challenge-title {
+    color: #e0e6ed;
+}
+
+body.dark-theme .challenge-meta {
+    color: #b0b7c3;
+}
+
+body.dark-theme .difficulty-badge {
+    border: 1px solid rgba(142, 207, 201, 0.3);
+}
+
+body.dark-theme .difficulty-easy {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+}
+
+body.dark-theme .difficulty-medium {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ffb74d;
+}
+
+body.dark-theme .difficulty-hard {
+    background: rgba(244, 67, 54, 0.2);
+    color: #e57373;
+}
+
+/* 英雄区域深色主题 */
+body.dark-theme .hero {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
+}
+
+body.dark-theme .hero-title {
+    color: #e0e6ed;
+}
+
+body.dark-theme .hero-subtitle {
+    color: #b0b7c3;
+}
+
+/* 区域标题深色主题 */
+body.dark-theme .section-title {
+    color: #e0e6ed;
+}
+
+body.dark-theme .section-subtitle {
+    color: #b0b7c3;
+}
+
+/* 表单元素深色主题 */
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+    background: rgba(42, 42, 66, 0.8);
+    border: 1px solid rgba(142, 207, 201, 0.3);
+    color: #e0e6ed;
+}
+
+body.dark-theme input:focus,
+body.dark-theme select:focus,
+body.dark-theme textarea:focus {
+    border-color: #8ecfc9;
+    box-shadow: 0 0 0 2px rgba(142, 207, 201, 0.2);
+}
+
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder {
+    color: #7a8194;
+}
+
+/* 链接深色主题 */
+body.dark-theme a {
+    color: #8ecfc9;
+}
+
+body.dark-theme a:hover {
+    color: #7bc4bd;
+}
+
+/* 表格深色主题 */
+body.dark-theme table {
+    background: rgba(42, 42, 66, 0.8);
+    color: #e0e6ed;
+}
+
+body.dark-theme th {
+    background: rgba(142, 207, 201, 0.2);
+    color: #e0e6ed;
+}
+
+body.dark-theme td {
+    border-color: rgba(142, 207, 201, 0.1);
+}
+
+body.dark-theme tr:hover {
+    background: rgba(142, 207, 201, 0.1);
+}
+
+/* 代码块深色主题 */
+body.dark-theme code,
+body.dark-theme pre {
+    background: rgba(26, 26, 46, 0.8);
+    color: #8ecfc9;
+    border: 1px solid rgba(142, 207, 201, 0.2);
+}
+
+/* 徽章和标签深色主题 */
+body.dark-theme .badge,
+body.dark-theme .tag {
+    background: rgba(142, 207, 201, 0.2);
+    color: #8ecfc9;
+}
+
+/* 分页器深色主题 */
+body.dark-theme .pagination a {
+    background: rgba(42, 42, 66, 0.8);
+    border: 1px solid rgba(142, 207, 201, 0.3);
+    color: #e0e6ed;
+}
+
+body.dark-theme .pagination a:hover,
+body.dark-theme .pagination a.active {
+    background: #8ecfc9;
+    color: #1a1a2e;
+}

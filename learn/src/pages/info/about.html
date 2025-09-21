@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="关于QHU-CTF - 了解我们的使命、愿景和团队">
+    <meta name="keywords" content="QHU-CTF, 关于我们, 网络安全, CTF平台">
+    <title>关于我们 - QHU-CTF</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="../../assets/css/common-styles.css">
+    <link rel="stylesheet" href="../../assets/css/theme-system.css">
+    <link rel="stylesheet" href="../../assets/css/responsive-styles.css">
+    
+    <style>
+        /* 关于页面特定样式 */
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 英雄区域 */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .section-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* 特色网格 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 团队网格 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .member-description {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            width: 50%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 3rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 3rem;
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-left-color: var(--bg-card);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-right-color: var(--bg-card);
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--bg-button);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: var(--bg-button);
+            border-radius: 50%;
+            border: 4px solid var(--bg-primary);
+            z-index: 1;
+        }
+
+        /* 联系信息 */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .contact-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .contact-link {
+            color: var(--bg-button);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 3rem !important;
+                padding-right: 0 !important;
+            }
+
+            .timeline-item .timeline-content::after {
+                left: -10px !important;
+                right: auto !important;
+                border-left-color: transparent !important;
+                border-right-color: var(--bg-card) !important;
+            }
+
+            .timeline-dot {
+                left: 20px;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="../index.html">
+                    <span class="brand-icon">🛡️</span>
+                    <span class="brand-text">QHU-CTF</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../core/challenges.html">挑战</a></li>
+                <li><a href="../core/scoreboard.html">排行榜</a></li>
+                <li><a href="../core/teams.html">团队</a></li>
+                <li><a href="help.html">帮助</a></li>
+                <li><a href="about.html" class="active">关于</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <a href="../login.html" class="login-btn">登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+        <div class="about-container">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">QHU-CTF</h1>
+                    <p class="hero-subtitle">
+                        致力于网络安全教育与人才培养的专业CTF平台，为学习者提供全面的网络安全技能训练环境
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="hero-stat-number">10,000+</span>
+                            <span class="hero-stat-label">注册用户</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-number">500+</span>
+                            <span class="hero-stat-label">挑战题目</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-number">50+</span>
+                            <span class="hero-stat-label">合作院校</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 使命愿景 -->
+            <section class="content-section">
+                <h2 class="section-title">我们的使命</h2>
+                <div class="section-content">
+                    <p>
+                        QHU-CTF平台致力于推动网络安全教育的普及与发展，通过提供高质量的CTF挑战题目和完善的学习环境，
+                        帮助学习者系统性地掌握网络安全技能，培养具备实战能力的网络安全人才。
+                    </p>
+                    <p>
+                        我们相信，网络安全不仅仅是技术问题，更是关乎国家安全、企业发展和个人隐私的重要议题。
+                        通过CTF这种寓教于乐的方式，我们希望能够激发更多人对网络安全的兴趣，共同构建更加安全的网络环境。
+                    </p>
+                </div>
+            </section>
+
+            <!-- 平台特色 -->
+            <section class="content-section">
+                <h2 class="section-title">平台特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">🎯</span>
+                        <h3 class="feature-title">专业题库</h3>
+                        <p class="feature-description">
+                            涵盖Web安全、逆向工程、密码学、取证分析等多个领域的专业题目，
+                            由资深安全专家精心设计，确保题目质量与实用性。
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">📚</span>
+                        <h3 class="feature-title">渐进式学习</h3>
+                        <p class="feature-description">
+                            从基础入门到高级进阶，提供完整的学习路径规划，
+                            配合详细的解题思路和技术文档，帮助学习者循序渐进地提升技能。
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">👥</span>
+                        <h3 class="feature-title">团队协作</h3>
+                        <p class="feature-description">
+                            支持团队组建与协作功能，鼓励学习者组队参与挑战，
+                            通过团队合作培养沟通能力和协作精神。
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">🏆</span>
+                        <h3 class="feature-title">竞赛体系</h3>
+                        <p class="feature-description">
+                            定期举办各类CTF竞赛活动，提供实战演练机会，
+                            建立完善的积分排名体系，激发学习者的竞争意识。
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">🔧</span>
+                        <h3 class="feature-title">实验环境</h3>
+                        <p class="feature-description">
+                            提供安全隔离的在线实验环境，支持多种操作系统和工具，
+                            让学习者能够在真实环境中进行安全测试和漏洞挖掘。
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">📊</span>
+                        <h3 class="feature-title">学习分析</h3>
+                        <p class="feature-description">
+                            智能分析学习进度和能力模型，提供个性化的学习建议，
+                            帮助学习者发现薄弱环节，制定针对性的提升计划。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 发展历程 -->
+            <section class="content-section">
+                <h2 class="section-title">发展历程</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2020年3月</div>
+                            <h3 class="timeline-title">平台创立</h3>
+                            <p class="timeline-description">
+                                QHU-CTF平台正式上线，初期提供基础的Web安全和密码学挑战题目。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2020年9月</div>
+                            <h3 class="timeline-title">题库扩展</h3>
+                            <p class="timeline-description">
+                                新增逆向工程、二进制漏洞利用等高级题目分类，题库规模达到100+。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2021年6月</div>
+                            <h3 class="timeline-title">团队功能</h3>
+                            <p class="timeline-description">
+                                推出团队协作功能，支持多人组队参与挑战，用户数突破1,000人。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2022年3月</div>
+                            <h3 class="timeline-title">竞赛体系</h3>
+                            <p class="timeline-description">
+                                建立完善的竞赛体系，举办首届QHU-CTF年度赛事，吸引全国高校参与。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2023年12月</div>
+                            <h3 class="timeline-title">平台升级</h3>
+                            <p class="timeline-description">
+                                全面升级平台架构，新增在线实验环境和智能学习分析功能。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年至今</div>
+                            <h3 class="timeline-title">持续发展</h3>
+                            <p class="timeline-description">
+                                用户数突破10,000人，题库规模达到500+，成为国内领先的CTF教育平台。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 核心团队 -->
+            <section class="content-section">
+                <h2 class="section-title">核心团队</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">张</div>
+                        <h3 class="member-name">张教授</h3>
+                        <p class="member-role">平台创始人 & 技术顾问</p>
+                        <p class="member-description">
+                            网络安全领域资深专家，拥有20年安全研究经验，
+                            致力于网络安全教育与人才培养。
+                        </p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">李</div>
+                        <h3 class="member-name">李工程师</h3>
+                        <p class="member-role">平台架构师</p>
+                        <p class="member-description">
+                            全栈开发专家，负责平台技术架构设计与实现，
+                            确保平台的稳定性和可扩展性。
+                        </p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">王</div>
+                        <h3 class="member-name">王安全师</h3>
+                        <p class="member-role">题目设计负责人</p>
+                        <p class="member-description">
+                            CTF竞赛经验丰富，负责平台题目设计与质量把控，
+                            确保题目的专业性和教育价值。
+                        </p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">赵</div>
+                        <h3 class="member-name">赵运营师</h3>
+                        <p class="member-role">社区运营负责人</p>
+                        <p class="member-description">
+                            负责平台社区建设与用户运营，
+                            致力于营造良好的学习氛围和交流环境。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 联系我们 -->
+            <section class="content-section">
+                <h2 class="section-title">联系我们</h2>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <span class="contact-icon">📧</span>
+                        <h3 class="contact-title">邮箱联系</h3>
+                        <p class="contact-info">
+                            <a href="mailto:contact@qhu-ctf.com" class="contact-link">
+                                contact@qhu-ctf.com
+                            </a>
+                        </p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <span class="contact-icon">💬</span>
+                        <h3 class="contact-title">QQ群</h3>
+                        <p class="contact-info">
+                            学习交流群：<span class="contact-link">123456789</span>
+                        </p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <span class="contact-icon">🐙</span>
+                        <h3 class="contact-title">GitHub</h3>
+                        <p class="contact-info">
+                            <a href="https://github.com/qhu-ctf" class="contact-link" target="_blank">
+                                github.com/qhu-ctf
+                            </a>
+                        </p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <span class="contact-icon">📍</span>
+                        <h3 class="contact-title">地址</h3>
+                        <p class="contact-info">
+                            北京市海淀区清华大学<br>
+                            网络安全实验室
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- JavaScript文件 -->
+    <script src="../../assets/js/common-scripts.js"></script>
+    <script src="../../assets/js/theme-manager.js"></script>
+    
+    <script>
+        // 关于页面特定的JavaScript功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 数字动画效果
+            function animateNumbers() {
+                const numbers = document.querySelectorAll('.hero-stat-number');
+                
+                numbers.forEach(number => {
+                    const target = parseInt(number.textContent.replace(/[^\d]/g, ''));
+                    const suffix = number.textContent.replace(/[\d]/g, '');
+                    let current = 0;
+                    const increment = target / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        number.textContent = Math.floor(current).toLocaleString() + suffix;
+                    }, 50);
+                });
+            }
+
+            // 滚动动画
+            function handleScrollAnimations() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                            
+                            // 如果是统计数字，触发动画
+                            if (entry.target.classList.contains('hero-stats')) {
+                                animateNumbers();
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                // 观察需要动画的元素
+                const animatedElements = document.querySelectorAll('.feature-card, .team-member, .timeline-item, .contact-card, .hero-stats');
+                animatedElements.forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(30px)';
+                    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    observer.observe(el);
+                });
+            }
+
+            // 平滑滚动
+            function initSmoothScroll() {
+                const links = document.querySelectorAll('a[href^="#"]');
+                links.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+            }
+
+            // 时间线动画
+            function initTimelineAnimation() {
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                
+                const timelineObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate');
+                        }
+                    });
+                }, {
+                    threshold: 0.5
+                });
+
+                timelineItems.forEach(item => {
+                    timelineObserver.observe(item);
+                });
+            }
+
+            // 页面初始化
+            function initializePage() {
+                console.log('初始化关于页面...');
+                handleScrollAnimations();
+                initSmoothScroll();
+                initTimelineAnimation();
+            }
+
+            // 初始化
+            initializePage();
+        });
+    </script>
+</body>
+</html>

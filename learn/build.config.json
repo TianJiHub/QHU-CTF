@@ -1,0 +1,14 @@
+{
+  "input": "src/",
+  "output": "dist/",
+  "assets": {
+    "css": "src/assets/css/",
+    "js": "src/assets/js/",
+    "images": "src/assets/images/"
+  },
+  "pages": {
+    "core": "src/pages/core/",
+    "admin": "src/pages/admin/",
+    "info": "src/pages/info/"
+  }
+}

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU-CTF 团队管理 - 创建和管理您的CTF团队">
+    <meta name="keywords" content="CTF, 团队, 协作, 竞赛团队">
+    <title>团队管理 - QHU-CTF</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="../../assets/css/common-styles.css">
+    <link rel="stylesheet" href="../../assets/css/theme-system.css">
+    <link rel="stylesheet" href="../../assets/css/responsive-styles.css">
+    
+    <style>
+        /* 团队页面特定样式 */
+        .teams-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 团队统计 */
+        .teams-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 操作区域 */
+        .teams-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 2px solid var(--border-primary);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            min-width: 300px;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--border-input-focus);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-icon {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .create-team-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .create-team-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* 团队网格 */
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .team-info h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .team-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .team-stats-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mini-stat {
+            text-align: center;
+            padding: 0.8rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .mini-stat-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .mini-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        .team-members {
+            margin-bottom: 1.5rem;
+        }
+
+        .members-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .members-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .member-tag {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-primary);
+        }
+
+        .member-tag.leader {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .team-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--bg-button);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--bg-button-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* 创建团队模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-primary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-input);
+            border-radius: 8px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--border-input-focus);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border-primary);
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-cancel {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .btn-create {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .teams-container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .teams-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .teams-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-stats-mini {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-primary);
+            border-top: 3px solid var(--bg-button);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="../index.html">
+                    <span class="brand-icon">🛡️</span>
+                    <span class="brand-text">QHU-CTF</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="challenges.html">挑战</a></li>
+                <li><a href="scoreboard.html">排行榜</a></li>
+                <li><a href="teams.html" class="active">团队</a></li>
+                <li><a href="../info/help.html">帮助</a></li>
+                <li><a href="../profile.html">个人中心</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <a href="../login.html" class="login-btn">登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+        <div class="teams-container">
+            <!-- 页面头部 -->
+            <header class="page-header">
+                <h1 class="page-title">团队管理</h1>
+                <p class="page-subtitle">
+                    组建您的CTF团队，与队友协作解决挑战，在竞赛中取得更好的成绩
+                </p>
+            </header>
+
+            <!-- 团队统计 -->
+            <section class="teams-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">活跃团队</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">竞赛团队</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">我的团队</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-label">团队积分</div>
+                </div>
+            </section>
+
+            <!-- 操作区域 -->
+            <section class="teams-actions">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索团队名称或成员..." id="searchInput">
+                </div>
+                <button class="create-team-btn" id="createTeamBtn">
+                    <span>➕</span>
+                    创建团队
+                </button>
+            </section>
+
+            <!-- 团队网格 -->
+            <section class="teams-grid" id="teamsGrid">
+                <!-- 示例团队卡片 -->
+                <div class="team-card">
+                    <div class="team-header">
+                        <div class="team-avatar">SS</div>
+                        <div class="team-info">
+                            <h3>安全小分队</h3>
+                            <p>专注Web安全研究的团队</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-stats-mini">
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">5</span>
+                            <span class="mini-stat-label">成员</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">1,250</span>
+                            <span class="mini-stat-label">积分</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">15</span>
+                            <span class="mini-stat-label">解题</span>
+                        </div>
+                    </div>
+
+                    <div class="team-members">
+                        <div class="members-title">团队成员</div>
+                        <div class="members-list">
+                            <span class="member-tag leader">张三 (队长)</span>
+                            <span class="member-tag">李四</span>
+                            <span class="member-tag">王五</span>
+                            <span class="member-tag">赵六</span>
+                            <span class="member-tag">+1</span>
+                        </div>
+                    </div>
+
+                    <div class="team-actions">
+                        <button class="btn-sm btn-primary">加入团队</button>
+                        <button class="btn-sm btn-outline">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-header">
+                        <div class="team-avatar">CY</div>
+                        <div class="team-info">
+                            <h3>Cyber Youthz</h3>
+                            <p>年轻有活力的CTF战队</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-stats-mini">
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">8</span>
+                            <span class="mini-stat-label">成员</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">2,180</span>
+                            <span class="mini-stat-label">积分</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">28</span>
+                            <span class="mini-stat-label">解题</span>
+                        </div>
+                    </div>
+
+                    <div class="team-members">
+                        <div class="members-title">团队成员</div>
+                        <div class="members-list">
+                            <span class="member-tag leader">Alice (队长)</span>
+                            <span class="member-tag">Bob</span>
+                            <span class="member-tag">Charlie</span>
+                            <span class="member-tag">David</span>
+                            <span class="member-tag">+4</span>
+                        </div>
+                    </div>
+
+                    <div class="team-actions">
+                        <button class="btn-sm btn-primary">加入团队</button>
+                        <button class="btn-sm btn-outline">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-header">
+                        <div class="team-avatar">RH</div>
+                        <div class="team-info">
+                            <h3>Red Hat Hackers</h3>
+                            <p>专业的渗透测试团队</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-stats-mini">
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">6</span>
+                            <span class="mini-stat-label">成员</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">3,420</span>
+                            <span class="mini-stat-label">积分</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-number">45</span>
+                            <span class="mini-stat-label">解题</span>
+                        </div>
+                    </div>
+
+                    <div class="team-members">
+                        <div class="members-title">团队成员</div>
+                        <div class="members-list">
+                            <span class="member-tag leader">Expert (队长)</span>
+                            <span class="member-tag">Ninja</span>
+                            <span class="member-tag">Ghost</span>
+                            <span class="member-tag">Shadow</span>
+                            <span class="member-tag">+2</span>
+                        </div>
+                    </div>
+
+                    <div class="team-actions">
+                        <button class="btn-sm btn-primary">加入团队</button>
+                        <button class="btn-sm btn-outline">查看详情</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 创建团队模态框 -->
+    <div class="modal" id="createTeamModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">创建新团队</h2>
+                <button class="close-btn" id="closeModalBtn">✕</button>
+            </div>
+
+            <form id="createTeamForm">
+                <div class="form-group">
+                    <label class="form-label" for="teamName">团队名称 *</label>
+                    <input type="text" id="teamName" name="teamName" class="form-input" placeholder="输入团队名称" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="teamDescription">团队描述</label>
+                    <textarea id="teamDescription" name="teamDescription" class="form-textarea" placeholder="简单描述您的团队..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="teamType">团队类型</label>
+                    <select id="teamType" name="teamType" class="form-input">
+                        <option value="public">公开团队 - 任何人都可以申请加入</option>
+                        <option value="private">私密团队 - 仅邀请制</option>
+                        <option value="competition">竞赛团队 - 专门参加比赛</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="maxMembers">最大成员数</label>
+                    <input type="number" id="maxMembers" name="maxMembers" class="form-input" value="10" min="2" max="50">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" id="cancelCreateBtn">取消</button>
+                    <button type="submit" class="btn btn-create">创建团队</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../assets/js/common-scripts.js"></script>
+    <script src="../../assets/js/theme-manager.js"></script>
+    
+    <script>
+        // 团队页面特定的JavaScript功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const createTeamBtn = document.getElementById('createTeamBtn');
+            const createTeamModal = document.getElementById('createTeamModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+            const createTeamForm = document.getElementById('createTeamForm');
+            const searchInput = document.getElementById('searchInput');
+            const teamsGrid = document.getElementById('teamsGrid');
+
+            // 模态框控制
+            createTeamBtn.addEventListener('click', function() {
+                createTeamModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+
+            function closeModal() {
+                createTeamModal.classList.remove('show');
+                document.body.style.overflow = '';
+                createTeamForm.reset();
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelCreateBtn.addEventListener('click', closeModal);
+
+            // 点击模态框外部关闭
+            createTeamModal.addEventListener('click', function(e) {
+                if (e.target === createTeamModal) {
+                    closeModal();
+                }
+            });
+
+            // ESC键关闭模态框
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && createTeamModal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+
+            // 创建团队表单提交
+            createTeamForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const teamData = Object.fromEntries(formData.entries());
+                
+                // 显示加载状态
+                const submitBtn = this.querySelector('.btn-create');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '创建中...';
+                submitBtn.disabled = true;
+
+                // 模拟创建团队请求
+                setTimeout(() => {
+                    console.log('创建团队:', teamData);
+                    alert('团队创建成功！');
+                    closeModal();
+                    
+                    // 这里应该刷新团队列表
+                    loadTeams();
+                    
+                    // 恢复按钮状态
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 1500);
+            });
+
+            // 搜索功能
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const query = this.value.toLowerCase().trim();
+                    filterTeams(query);
+                }, 300);
+            });
+
+            // 过滤团队
+            function filterTeams(query) {
+                const teamCards = teamsGrid.querySelectorAll('.team-card');
+                
+                teamCards.forEach(card => {
+                    const teamName = card.querySelector('h3').textContent.toLowerCase();
+                    const teamDesc = card.querySelector('p').textContent.toLowerCase();
+                    const members = Array.from(card.querySelectorAll('.member-tag'))
+                        .map(tag => tag.textContent.toLowerCase())
+                        .join(' ');
+                    
+                    const matches = teamName.includes(query) || 
+                                  teamDesc.includes(query) || 
+                                  members.includes(query);
+                    
+                    card.style.display = matches ? 'block' : 'none';
+                });
+            }
+
+            // 加载团队数据
+            function loadTeams() {
+                // 这里应该从API加载团队数据
+                console.log('加载团队数据...');
+                
+                // 模拟加载过程
+                showLoading();
+                
+                setTimeout(() => {
+                    hideLoading();
+                    // 这里应该渲染实际的团队数据
+                }, 1000);
+            }
+
+            // 显示加载状态
+            function showLoading() {
+                teamsGrid.innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>正在加载团队数据...</p>
+                    </div>
+                `;
+            }
+
+            // 隐藏加载状态
+            function hideLoading() {
+                // 这里应该恢复实际的团队卡片
+                // 当前保持示例数据
+            }
+
+            // 团队操作事件委托
+            teamsGrid.addEventListener('click', function(e) {
+                const target = e.target;
+                
+                if (target.classList.contains('btn-primary')) {
+                    // 加入团队
+                    const teamCard = target.closest('.team-card');
+                    const teamName = teamCard.querySelector('h3').textContent;
+                    
+                    if (confirm(`确定要申请加入团队 "${teamName}" 吗？`)) {
+                        // 这里应该调用加入团队的API
+                        alert('申请已发送，等待团队管理员审核');
+                    }
+                } else if (target.classList.contains('btn-outline')) {
+                    // 查看详情
+                    const teamCard = target.closest('.team-card');
+                    const teamName = teamCard.querySelector('h3').textContent;
+                    
+                    // 这里应该跳转到团队详情页面
+                    alert(`查看团队 "${teamName}" 的详细信息`);
+                }
+            });
+
+            // 页面初始化
+            function initializePage() {
+                console.log('初始化团队页面...');
+                // loadTeams();
+            }
+
+            // 初始化
+            initializePage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU网络安全CTF竞赛平台 - QHU-CTF">
+    <meta name="keywords" content="CTF, 网络安全, 退出登录, 安全">
+    <title>QHU-CTF - QHU网络安全CTF竞赛平台</title>
+    
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式 */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .navbar h1 a {
+            text-decoration: none;
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .navbar h1 a:hover {
+            color: #764ba2;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-menu a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white !important;
+            padding: 0.7rem 1.5rem !important;
+            border-radius: 25px;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* 退出登录卡片 */
+        .logout-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logout-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+        }
+
+        .logout-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .logout-message {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* 倒计时样式 */
+        .countdown-container {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .countdown-text {
+            color: #667eea;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .countdown-timer {
+            font-size: 2rem;
+            color: #333;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* 按钮组 */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        /* 安全提示 */
+        .security-tips {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .tips-title {
+            color: #f39c12;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-list {
+            color: #666;
+            line-height: 1.6;
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tips-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        /* 页脚样式 */
+        .site-footer {
+            background: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-text {
+            color: #bdc3c7;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar-toggle {
+                display: block;
+            }
+            
+            .navbar-menu {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+            
+            .navbar-menu.active {
+                display: flex;
+            }
+            
+            .navbar-menu li {
+                width: 100%;
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+            
+            .logout-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .logout-title {
+                font-size: 1.8rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-container {
+                padding: 0 1rem;
+                min-height: 60px;
+            }
+            
+            .logout-card {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+            
+            .logout-icon {
+                font-size: 3rem;
+            }
+            
+            .logout-title {
+                font-size: 1.6rem;
+            }
+            
+            .countdown-timer {
+                font-size: 1.5rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* 焦点样式 */
+        a:focus, button:focus, input:focus, select:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* 深色主题支持 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                color: #ecf0f1;
+            }
+            
+            .site-header {
+                background: rgba(44, 62, 80, 0.95);
+            }
+            
+            .logout-card {
+                background: #34495e;
+                color: #ecf0f1;
+            }
+            
+            .logout-title {
+                color: #ecf0f1;
+            }
+            
+            .countdown-timer {
+                color: #ecf0f1;
+            }
+            
+            .btn-secondary {
+                background: #34495e;
+                color: #667eea;
+                border-color: #667eea;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/responsive-styles.css">
+    <link rel="stylesheet" href="../assets/css/theme-system.css">
+    <meta name="author" content="sunsky">
+    <meta property="og:title" content="QHU-CTF">
+    <meta property="og:description" content="QHU网络安全CTF竞赛平台">
+</head>
+<body class="light-theme">
+    <!-- 页面头部 -->
+    <header class="site-header" role="banner">
+            <!-- 导航栏 -->
+    <nav class="navbar" role="navigation" aria-label="主导航">
+        <div class="nav-container">
+            <a href="../core/index.html" class="nav-brand" aria-label="QHUCTF首页">🛡️ QHUCTF</a>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="切换导航菜单" aria-expanded="false">☰</button>
+            <ul class="nav-menu" id="navMenu" role="menubar">
+                <li role="none"><a href="../core/index.html" class="nav-link" role="menuitem">首页</a></li>
+                <li role="none"><a href="../core/challenges.html" class="nav-link" role="menuitem">题目</a></li>
+                <li role="none"><a href="scoreboard.html" class="nav-link" role="menuitem">排行榜</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">团队</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">用户</a></li>
+                <li role="none"><a href="../core/login.html" class="nav-link" role="menuitem">登录</a></li>
+                <li role="none"><button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换深浅主题">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content" role="main">
+        <div class="logout-message">
+            <div class="container text-center">
+                <h2>退出成功</h2>
+                <p>您已成功退出登录，感谢使用！</p>
+                <a href="../core/index.html" class="btn btn-primary">返回首页</a>
+            </div>
+        </div>
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb-nav" aria-label="面包屑导航">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item">
+                    <a href="../core/index.html" class="breadcrumb-link">首页</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">退出登录</li>
+            </ol>
+        </nav>
+
+        <!-- 退出登录确认区域 -->
+        <section class="logout-section">
+            <div class="logout-container">
+                <div class="logout-card">
+                    <div class="logout-header">
+                        <div class="logout-icon" aria-hidden="true">🚪</div>
+                        <h1 class="logout-title">确认退出登录</h1>
+                        <p class="logout-subtitle">您确定要退出当前账户吗？</p>
+                    </div>
+
+                    <div class="logout-content">
+                        <!-- 用户信息展示 -->
+                        <div class="user-info-card">
+                            <div class="user-avatar" aria-hidden="true">👤</div>
+                            <div class="user-details">
+                                <h2 class="user-name">当前用户</h2>
+                                <p class="user-email">user@example.com</p>
+                                <p class="login-time">
+                                    <time datetime="2025/9/19T10:30:00">登录时间：2025/9/19 10:30</time>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 退出选项 -->
+                        <div class="logout-options">
+                            <h3 class="options-title">退出选项</h3>
+                            <div class="option-group">
+                                <label class="option-item">
+                                    <input type="checkbox" name="logout-options" value="clear-cache" checked>
+                                    <span class="option-text">清除本地缓存数据</span>
+                                    <span class="option-desc">清除保存在浏览器中的临时数据</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="logout-options" value="remember-device">
+                                    <span class="option-text">记住此设备</span>
+                                    <span class="option-desc">下次登录时跳过设备验证</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 操作按钮 -->
+                        <div class="logout-actions">
+                            <button type="button" class="btn btn-secondary" onclick="history.back()">
+                                <span class="btn-icon" aria-hidden="true">↩️</span>
+                                取消
+                            </button>
+                            <button type="button" class="btn btn-danger" id="confirm-logout">
+                                <span class="btn-icon" aria-hidden="true">🚪</span>
+                                确认退出
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 安全提示 -->
+                <aside class="security-tips">
+                    <h3 class="tips-title">🔒 安全提示</h3>
+                    <ul class="tips-list">
+                        <li class="tip-item">
+                            <strong>公共设备：</strong>在公共设备上使用后，请务必退出登录
+                        </li>
+                        <li class="tip-item">
+                            <strong>数据安全：</strong>退出后您的个人数据将被清除
+                        </li>
+                        <li class="tip-item">
+                            <strong>会话保护：</strong>长时间不活动会自动退出登录
+                        </li>
+                        <li class="tip-item">
+                            <strong>重新登录：</strong>退出后可随时使用账号密码重新登录
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+
+        <!-- 快速操作区域 -->
+        <section class="quick-actions">
+            <div class="actions-container">
+                <h3 class="actions-title">退出后您可以</h3>
+                <div class="actions-grid">
+                    <a href="../core/index.html" class="action-card">
+                        <div class="action-icon" aria-hidden="true">🏠</div>
+                        <h4 class="action-title">浏览首页</h4>
+                        <p class="action-desc">查看平台最新动态和公告</p>
+                    </a>
+                    <a href="../core/challenges.html" class="action-card">
+                        <div class="action-icon" aria-hidden="true">🎯</div>
+                        <h4 class="action-title">查看题目</h4>
+                        <p class="action-desc">浏览公开的CTF题目</p>
+                    </a>
+                    <a href="scoreboard.html" class="action-card">
+                        <div class="action-icon" aria-hidden="true">🏆</div>
+                        <h4 class="action-title">排行榜</h4>
+                        <p class="action-desc">查看用户排名和成绩</p>
+                    </a>
+                    <a href="../core/register.html" class="action-card">
+                        <div class="action-icon" aria-hidden="true">📝</div>
+                        <h4 class="action-title">注册账户</h4>
+                        <p class="action-desc">创建新的用户账户</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- 快速导航 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">快速导航</h3>
+                    <ul class="footer-links">
+                        <li><a href="../core/index.html" class="footer-link">首页</a></li>
+                        <li><a href="../core/challenges.html" class="footer-link">题目列表</a></li>
+                        <li><a href="scoreboard.html" class="footer-link">排行榜</a></li>
+                        <li><a href="../core/login.html" class="footer-link">用户登录</a></li>
+                    </ul>
+                </div>
+
+                <!-- 用户服务 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">用户服务</h3>
+                    <ul class="footer-links">
+                        <li><a href="../info/help.html" class="footer-link">帮助中心</a></li>
+                        <li><a href="forgot-password.html" class="footer-link">忘记密码</a></li>
+                        <li><a href="../core/register.html" class="footer-link">用户注册</a></li>
+                        <li><a href="privacy.html" class="footer-link">隐私政策</a></li>
+                    </ul>
+                </div>
+
+                <!-- 联系我们 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">联系我们</h3>
+                    <div class="contact-info">
+                        <p class="contact-item">
+                            <span class="contact-icon" aria-hidden="true">📧</span>
+                            <a href="mailto:admin@qhuctf.com" class="contact-link">admin@qhuctf.com</a>
+                        </p>
+                        <p class="contact-item">
+                            <span class="contact-icon" aria-hidden="true">🌐</span>
+                            <span class="contact-text">QHUCTF竞赛平台</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权信息 -->
+            <div class="footer-bottom">
+                <p class="copyright">
+                    &copy; 2025 QHUCTF竞赛平台. 保留所有权利.
+                </p>
+                <div class="footer-meta">
+                    <a href="terms.html" class="footer-link">服务条款</a>
+                    <span class="separator">|</span>
+                    <a href="privacy.html" class="footer-link">隐私政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

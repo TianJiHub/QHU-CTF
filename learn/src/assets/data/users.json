@@ -1,0 +1,234 @@
+{
+  "users": [
+    {
+      "id": "user-001",
+      "username": "CyberHacker",
+      "email": "cyberhacker@example.com",
+      "avatar": "/assets/images/avatars/avatar1.png",
+      "rank": 1,
+      "score": 2850,
+      "level": "Expert",
+      "solved_challenges": 45,
+      "total_attempts": 78,
+      "join_date": "2024-09-15T08:30:00Z",
+      "last_active": "2025-01-10T14:30:00Z",
+      "badges": ["First Blood", "Speed Demon", "Crypto Master"],
+      "bio": "热爱网络安全，专注于Web渗透和密码学研究",
+      "github": "https://github.com/cyberhacker",
+      "website": "https://cyberhacker.blog"
+    },
+    {
+      "id": "user-002", 
+      "username": "SecureNinja",
+      "email": "secureninja@example.com",
+      "avatar": "/assets/images/avatars/avatar2.png",
+      "rank": 2,
+      "score": 2650,
+      "level": "Expert",
+      "solved_challenges": 42,
+      "total_attempts": 89,
+      "join_date": "2024-08-20T10:15:00Z",
+      "last_active": "2025-01-10T13:45:00Z",
+      "badges": ["Pwn Master", "Reverse Engineer", "Team Player"],
+      "bio": "二进制安全爱好者，擅长逆向工程和漏洞挖掘",
+      "github": "https://github.com/secureninja"
+    },
+    {
+      "id": "user-003",
+      "username": "WebExplorer",
+      "email": "webexplorer@example.com", 
+      "avatar": "/assets/images/avatars/avatar3.png",
+      "rank": 3,
+      "score": 2400,
+      "level": "Advanced",
+      "solved_challenges": 38,
+      "total_attempts": 67,
+      "join_date": "2024-10-05T16:20:00Z",
+      "last_active": "2025-01-10T12:20:00Z",
+      "badges": ["Web Security", "SQL Injection", "XSS Hunter"],
+      "bio": "Web安全研究员，专注于OWASP Top 10漏洞研究",
+      "website": "https://webexplorer.security"
+    },
+    {
+      "id": "user-004",
+      "username": "CryptoWizard",
+      "email": "cryptowizard@example.com",
+      "avatar": "/assets/images/avatars/avatar4.png", 
+      "rank": 4,
+      "score": 2200,
+      "level": "Advanced",
+      "solved_challenges": 35,
+      "total_attempts": 58,
+      "join_date": "2024-07-12T09:45:00Z",
+      "last_active": "2025-01-10T11:30:00Z",
+      "badges": ["Crypto Master", "Math Genius", "Algorithm Expert"],
+      "bio": "密码学专家，对各种加密算法和数学难题情有独钟"
+    },
+    {
+      "id": "user-005",
+      "username": "ForensicDetective",
+      "email": "forensic@example.com",
+      "avatar": "/assets/images/avatars/avatar5.png",
+      "rank": 5,
+      "score": 1950,
+      "level": "Intermediate",
+      "solved_challenges": 32,
+      "total_attempts": 71,
+      "join_date": "2024-11-08T14:10:00Z",
+      "last_active": "2025-01-10T10:15:00Z",
+      "badges": ["Digital Forensics", "Steganography", "Evidence Hunter"],
+      "bio": "数字取证专家，擅长从各种数据中发现隐藏的线索"
+    },
+    {
+      "id": "user-006",
+      "username": "NetworkGuardian",
+      "email": "netguardian@example.com",
+      "avatar": "/assets/images/avatars/avatar6.png",
+      "rank": 6,
+      "score": 1800,
+      "level": "Intermediate",
+      "solved_challenges": 28,
+      "total_attempts": 52,
+      "join_date": "2024-09-30T11:25:00Z",
+      "last_active": "2025-01-10T09:40:00Z",
+      "badges": ["Network Security", "Packet Analysis", "Firewall Expert"],
+      "bio": "网络安全工程师，专注于网络流量分析和入侵检测"
+    },
+    {
+      "id": "user-007",
+      "username": "MobileHacker",
+      "email": "mobilehacker@example.com",
+      "avatar": "/assets/images/avatars/avatar7.png",
+      "rank": 7,
+      "score": 1650,
+      "level": "Intermediate",
+      "solved_challenges": 25,
+      "total_attempts": 48,
+      "join_date": "2024-12-01T13:50:00Z",
+      "last_active": "2025-01-10T08:20:00Z",
+      "badges": ["Mobile Security", "Android Expert", "iOS Researcher"],
+      "bio": "移动安全研究员，专注于Android和iOS应用安全分析"
+    },
+    {
+      "id": "user-008",
+      "username": "CloudDefender",
+      "email": "clouddefender@example.com",
+      "avatar": "/assets/images/avatars/avatar8.png",
+      "rank": 8,
+      "score": 1500,
+      "level": "Beginner",
+      "solved_challenges": 22,
+      "total_attempts": 41,
+      "join_date": "2024-10-20T15:30:00Z",
+      "last_active": "2025-01-09T20:10:00Z",
+      "badges": ["Cloud Security", "AWS Expert", "Container Security"],
+      "bio": "云安全专家，熟悉各大云平台的安全配置和最佳实践"
+    },
+    {
+      "id": "user-009",
+      "username": "SocialEngineer",
+      "email": "socialeng@example.com",
+      "avatar": "/assets/images/avatars/avatar9.png",
+      "rank": 9,
+      "score": 1350,
+      "level": "Beginner",
+      "solved_challenges": 19,
+      "total_attempts": 35,
+      "join_date": "2024-11-15T12:40:00Z",
+      "last_active": "2025-01-09T18:30:00Z",
+      "badges": ["Social Engineering", "OSINT", "Phishing Expert"],
+      "bio": "社会工程学研究者，擅长信息收集和人员渗透测试"
+    },
+    {
+      "id": "user-010",
+      "username": "NewbieLearner",
+      "email": "newbie@example.com",
+      "avatar": "/assets/images/avatars/avatar10.png",
+      "rank": 10,
+      "score": 1200,
+      "level": "Beginner",
+      "solved_challenges": 16,
+      "total_attempts": 28,
+      "join_date": "2024-12-20T10:00:00Z",
+      "last_active": "2025-01-10T07:45:00Z",
+      "badges": ["First Steps", "Quick Learner"],
+      "bio": "网络安全新手，正在努力学习各种安全技术和工具"
+    }
+  ],
+  "statistics": {
+    "total_users": 10,
+    "active_users_today": 8,
+    "active_users_week": 10,
+    "new_users_month": 3,
+    "top_categories": [
+      {
+        "category": "Web",
+        "solved_count": 156,
+        "popularity": 85
+      },
+      {
+        "category": "Crypto",
+        "solved_count": 134,
+        "popularity": 78
+      },
+      {
+        "category": "Pwn",
+        "solved_count": 98,
+        "popularity": 65
+      },
+      {
+        "category": "Reverse",
+        "solved_count": 87,
+        "popularity": 58
+      },
+      {
+        "category": "Misc",
+        "solved_count": 112,
+        "popularity": 72
+      }
+    ],
+    "difficulty_distribution": {
+      "Easy": 45,
+      "Medium": 32,
+      "Hard": 18,
+      "Expert": 5
+    },
+    "recent_activities": [
+      {
+        "user": "CyberHacker",
+        "action": "solved",
+        "challenge": "SQL注入基础",
+        "timestamp": "2025-01-10T14:30:00Z",
+        "points": 150
+      },
+      {
+        "user": "SecureNinja",
+        "action": "solved",
+        "challenge": "缓冲区溢出入门",
+        "timestamp": "2025-01-10T13:45:00Z",
+        "points": 200
+      },
+      {
+        "user": "WebExplorer",
+        "action": "attempted",
+        "challenge": "XSS过滤器绕过",
+        "timestamp": "2025-01-10T12:20:00Z",
+        "points": 0
+      },
+      {
+        "user": "CryptoWizard",
+        "action": "solved",
+        "challenge": "RSA加密挑战",
+        "timestamp": "2025-01-10T11:30:00Z",
+        "points": 250
+      },
+      {
+        "user": "ForensicDetective",
+        "action": "solved",
+        "challenge": "隐写术入门",
+        "timestamp": "2025-01-10T10:15:00Z",
+        "points": 150
+      }
+    ]
+  }
+}

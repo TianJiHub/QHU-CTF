@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU-CTF 挑战题目 - 网络安全技能挑战">
+    <meta name="keywords" content="CTF, 挑战题目, 网络安全, Web安全, 逆向工程">
+    <title>挑战题目 - QHU-CTF</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="../../assets/css/common-styles.css">
+    <link rel="stylesheet" href="../../assets/css/theme-system.css">
+    <link rel="stylesheet" href="../../assets/css/responsive-styles.css">
+    
+    <style>
+        /* 挑战页面特定样式 */
+        .challenges-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .challenges-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .challenges-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 过滤器区域 */
+        .filters-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .search-box {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* 挑战题目网格 */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .challenge-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .challenge-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .category-web {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-crypto {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .category-reverse {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .category-forensics {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .challenge-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-points {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .challenge-body {
+            padding: 1.5rem;
+        }
+
+        .challenge-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .challenge-footer {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .challenge-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-solved {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .status-unsolved {
+            color: #6c757d;
+        }
+
+        .btn-challenge {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        /* 统计信息 */
+        .stats-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <h1><a href="../index.html">QHU-CTF</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">首页</a></li>
+                    <li><a href="challenges.html" class="active">题目</a></li>
+                    <li><a href="scoreboard.html">排行榜</a></li>
+                    <li><a href="../info/help.html">帮助</a></li>
+                    <li><a href="login.html" class="btn-login">登录</a></li>
+                </ul>
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 页面头部 -->
+    <section class="challenges-header">
+        <div class="container">
+            <h1 class="challenges-title">挑战题目</h1>
+            <p class="challenges-subtitle">选择你感兴趣的领域，开始你的安全技术之旅</p>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <!-- 统计信息 -->
+        <div class="stats-bar">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">总题目数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">已解决</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">34</div>
+                    <div class="stat-label">未解决</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1,250</div>
+                    <div class="stat-label">总积分</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 过滤器 -->
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">分类</label>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">所有分类</option>
+                        <option value="web">Web安全</option>
+                        <option value="crypto">密码学</option>
+                        <option value="reverse">逆向工程</option>
+                        <option value="forensics">取证分析</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">难度</label>
+                    <select class="filter-select" id="difficultyFilter">
+                        <option value="">所有难度</option>
+                        <option value="easy">简单</option>
+                        <option value="medium">中等</option>
+                        <option value="hard">困难</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">状态</label>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">所有状态</option>
+                        <option value="solved">已解决</option>
+                        <option value="unsolved">未解决</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">搜索</label>
+                    <input type="text" class="search-box" id="searchBox" placeholder="搜索题目名称...">
+                </div>
+            </div>
+        </div>
+
+        <!-- 挑战题目网格 -->
+        <div class="challenges-grid">
+            <!-- Web安全题目示例 -->
+            <div class="challenge-card" data-category="web" data-difficulty="easy" data-status="solved">
+                <div class="challenge-header">
+                    <span class="challenge-category category-web">Web安全</span>
+                    <h3 class="challenge-title">简单的SQL注入</h3>
+                    <div class="challenge-points">100 分</div>
+                </div>
+                <div class="challenge-body">
+                    <p class="challenge-description">
+                        这是一个基础的SQL注入挑战，你需要利用SQL注入漏洞获取数据库中的敏感信息。
+                        适合初学者练习基本的SQL注入技巧。
+                    </p>
+                    <div class="challenge-stats">
+                        <span>解决人数: 89</span>
+                        <span>尝试次数: 156</span>
+                    </div>
+                </div>
+                <div class="challenge-footer">
+                    <div class="challenge-status status-solved">
+                        ✓ 已解决
+                    </div>
+                    <a href="#" class="btn-challenge btn-success">查看解答</a>
+                </div>
+            </div>
+
+            <!-- 密码学题目示例 -->
+            <div class="challenge-card" data-category="crypto" data-difficulty="medium" data-status="unsolved">
+                <div class="challenge-header">
+                    <span class="challenge-category category-crypto">密码学</span>
+                    <h3 class="challenge-title">RSA加密挑战</h3>
+                    <div class="challenge-points">250 分</div>
+                </div>
+                <div class="challenge-body">
+                    <p class="challenge-description">
+                        这道题目涉及RSA加密算法的安全性分析。你需要分析给定的RSA参数，
+                        找出其中的安全漏洞并成功解密密文。
+                    </p>
+                    <div class="challenge-stats">
+                        <span>解决人数: 23</span>
+                        <span>尝试次数: 78</span>
+                    </div>
+                </div>
+                <div class="challenge-footer">
+                    <div class="challenge-status status-unsolved">
+                        ○ 未解决
+                    </div>
+                    <a href="#" class="btn-challenge btn-primary">开始挑战</a>
+                </div>
+            </div>
+
+            <!-- 逆向工程题目示例 -->
+            <div class="challenge-card" data-category="reverse" data-difficulty="hard" data-status="unsolved">
+                <div class="challenge-header">
+                    <span class="challenge-category category-reverse">逆向工程</span>
+                    <h3 class="challenge-title">二进制分析大师</h3>
+                    <div class="challenge-points">400 分</div>
+                </div>
+                <div class="challenge-body">
+                    <p class="challenge-description">
+                        这是一个高难度的二进制逆向分析题目。你需要分析一个复杂的可执行文件，
+                        理解其算法逻辑并找出隐藏的flag。
+                    </p>
+                    <div class="challenge-stats">
+                        <span>解决人数: 5</span>
+                        <span>尝试次数: 42</span>
+                    </div>
+                </div>
+                <div class="challenge-footer">
+                    <div class="challenge-status status-unsolved">
+                        ○ 未解决
+                    </div>
+                    <a href="#" class="btn-challenge btn-primary">开始挑战</a>
+                </div>
+            </div>
+
+            <!-- 取证分析题目示例 -->
+            <div class="challenge-card" data-category="forensics" data-difficulty="medium" data-status="unsolved">
+                <div class="challenge-header">
+                    <span class="challenge-category category-forensics">取证分析</span>
+                    <h3 class="challenge-title">网络流量分析</h3>
+                    <div class="challenge-points">200 分</div>
+                </div>
+                <div class="challenge-body">
+                    <p class="challenge-description">
+                        分析提供的网络数据包文件，从中找出攻击者的行为轨迹和隐藏的信息。
+                        需要使用Wireshark等工具进行深入分析。
+                    </p>
+                    <div class="challenge-stats">
+                        <span>解决人数: 34</span>
+                        <span>尝试次数: 67</span>
+                    </div>
+                </div>
+                <div class="challenge-footer">
+                    <div class="challenge-status status-unsolved">
+                        ○ 未解决
+                    </div>
+                    <a href="#" class="btn-challenge btn-primary">开始挑战</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2025 QHU-CTF. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="../../assets/js/common-scripts.js"></script>
+    <script src="../../assets/js/theme-manager.js"></script>
+    
+    <script>
+        // 挑战页面特定的JavaScript功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const difficultyFilter = document.getElementById('difficultyFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const searchBox = document.getElementById('searchBox');
+            const challengeCards = document.querySelectorAll('.challenge-card');
+
+            function filterChallenges() {
+                const categoryValue = categoryFilter.value;
+                const difficultyValue = difficultyFilter.value;
+                const statusValue = statusFilter.value;
+                const searchValue = searchBox.value.toLowerCase();
+
+                challengeCards.forEach(card => {
+                    const category = card.dataset.category;
+                    const difficulty = card.dataset.difficulty;
+                    const status = card.dataset.status;
+                    const title = card.querySelector('.challenge-title').textContent.toLowerCase();
+
+                    const categoryMatch = !categoryValue || category === categoryValue;
+                    const difficultyMatch = !difficultyValue || difficulty === difficultyValue;
+                    const statusMatch = !statusValue || status === statusValue;
+                    const searchMatch = !searchValue || title.includes(searchValue);
+
+                    if (categoryMatch && difficultyMatch && statusMatch && searchMatch) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            categoryFilter.addEventListener('change', filterChallenges);
+            difficultyFilter.addEventListener('change', filterChallenges);
+            statusFilter.addEventListener('change', filterChallenges);
+            searchBox.addEventListener('input', filterChallenges);
+        });
+    </script>
+</body>
+</html>

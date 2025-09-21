@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU网络安全CTF竞赛平台 - QHU-CTF">
+    <meta name="keywords" content="CTF, 服务条款, 用户协议, 使用规则, 网络安全">
+    <title>QHU-CTF - QHU网络安全CTF竞赛平台</title>
+    
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* 导航栏样式 */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .navbar h1 a {
+            text-decoration: none;
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .navbar h1 a:hover {
+            color: #764ba2;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-menu a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white !important;
+            padding: 0.7rem 1.5rem !important;
+            border-radius: 25px;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb-nav {
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .breadcrumb-item {
+            color: #666;
+        }
+
+        .breadcrumb-item:not(:last-child)::after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: #999;
+        }
+
+        .breadcrumb-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 服务条款样式 */
+        .terms-of-service {
+            padding: 0;
+        }
+
+        .terms-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+        }
+
+        .terms-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .terms-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .last-updated {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* 目录导航 */
+        .terms-toc {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .toc-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .toc-item {
+            padding: 0.5rem 0;
+        }
+
+        .toc-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* 条款内容区域 */
+        .terms-content {
+            margin-bottom: 3rem;
+        }
+
+        .terms-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(102, 126, 234, 0.02);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .section-content h3 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .section-content ul, .section-content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 重要提示框 */
+        .important-notice {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .notice-title {
+            color: #f39c12;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notice-content {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 联系信息卡片 */
+        .contact-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .contact-title {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .contact-desc {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .contact-button:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* 页脚样式 */
+        .site-footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            text-align: center;
+            color: #95a5a6;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .navbar-container {
+                padding: 0 1rem;
+            }
+            
+            .main-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .toc-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-toggle {
+                display: block;
+            }
+            
+            .navbar-menu {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+            
+            .navbar-menu.active {
+                display: flex;
+            }
+            
+            .navbar-menu li {
+                width: 100%;
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+            
+            .terms-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .terms-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-container {
+                padding: 0 1rem;
+                min-height: 60px;
+            }
+            
+            .main-content {
+                margin: 0.5rem;
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            
+            .terms-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .terms-title {
+                font-size: 1.8rem;
+            }
+            
+            .terms-section {
+                padding: 1rem;
+            }
+            
+            .back-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* 焦点样式 */
+        a:focus, button:focus, input:focus, select:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* 深色主题支持 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                color: #ecf0f1;
+            }
+            
+            .site-header {
+                background: rgba(44, 62, 80, 0.95);
+            }
+            
+            .main-content {
+                background: #34495e;
+                color: #ecf0f1;
+            }
+            
+            .terms-section {
+                background: rgba(102, 126, 234, 0.1);
+            }
+            
+            .contact-info {
+                background: #2c3e50;
+                color: #ecf0f1;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/responsive-styles.css">
+    <link rel="stylesheet" href="../assets/css/theme-system.css">
+    <meta name="author" content="sunsky">
+    <meta property="og:title" content="QHU-CTF">
+    <meta property="og:description" content="QHU网络安全CTF竞赛平台">
+</head>
+<body class="light-theme">
+    <!-- 页面头部 -->
+    <header class="site-header" role="banner">
+            <!-- 导航栏 -->
+    <nav class="navbar" role="navigation" aria-label="主导航">
+        <div class="nav-container">
+            <a href="../core/index.html" class="nav-brand" aria-label="QHUCTF首页">🛡️ QHUCTF</a>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="切换导航菜单" aria-expanded="false">☰</button>
+            <ul class="nav-menu" id="navMenu" role="menubar">
+                <li role="none"><a href="../core/index.html" class="nav-link" role="menuitem">首页</a></li>
+                <li role="none"><a href="../core/challenges.html" class="nav-link" role="menuitem">题目</a></li>
+                <li role="none"><a href="scoreboard.html" class="nav-link" role="menuitem">排行榜</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">团队</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">用户</a></li>
+                <li role="none"><a href="../core/login.html" class="nav-link" role="menuitem">登录</a></li>
+                <li role="none"><button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换深浅主题">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content" role="main">
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb-nav" aria-label="面包屑导航">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item">
+                    <a href="../core/index.html" class="breadcrumb-link">首页</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">服务条款</li>
+            </ol>
+        </nav>
+
+        <!-- 服务条款内容 -->
+        <article class="terms-of-service">
+            <div class="terms-container">
+                <!-- 条款头部 -->
+                <header class="terms-header">
+                    <h1 class="terms-title">服务条款</h1>
+                    <div class="terms-meta">
+                        <p class="update-date">
+                            <time datetime="2025/9/19">最后更新：2025年1月10日</time>
+                        </p>
+                        <p class="effective-date">
+                            <time datetime="2025/9/19">生效日期：2025年1月10日</time>
+                        </p>
+                    </div>
+                    <div class="terms-summary">
+                        <p>欢迎使用QHUCTF竞赛平台！本服务条款规定了您使用我们平台的权利和义务。请仔细阅读以下条款。</p>
+                    </div>
+                </header>
+
+                <!-- 目录导航 -->
+                <nav class="terms-toc" aria-label="条款目录">
+                    <h2 class="toc-title">目录</h2>
+                    <ol class="toc-list">
+                        <li><a href="#section-1" class="toc-link">服务概述</a></li>
+                        <li><a href="#section-2" class="toc-link">用户注册</a></li>
+                        <li><a href="#section-3" class="toc-link">使用规则</a></li>
+                        <li><a href="#section-4" class="toc-link">竞赛规则</a></li>
+                        <li><a href="#section-5" class="toc-link">知识产权</a></li>
+                        <li><a href="#section-6" class="toc-link">用户行为</a></li>
+                        <li><a href="#section-7" class="toc-link">服务变更</a></li>
+                        <li><a href="#section-8" class="toc-link">免责声明</a></li>
+                        <li><a href="#section-9" class="toc-link">争议解决</a></li>
+                        <li><a href="#section-10" class="toc-link">联系我们</a></li>
+                    </ol>
+                </nav>
+
+                <!-- 条款内容 -->
+                <div class="terms-content">
+                    <!-- 第1节：服务概述 -->
+                    <section id="section-1" class="terms-section">
+                        <h2 class="section-title">1. 服务概述</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">1.1 服务定义</h3>
+                            <p>QHUCTF竞赛平台（以下简称"本平台"或"我们"）是一个专注于网络安全技术学习和竞赛的在线平台，为用户提供：</p>
+                            
+                            <div class="service-features">
+                                <div class="feature-card">
+                                    <div class="feature-icon" aria-hidden="true">🎯</div>
+                                    <h4 class="feature-title">CTF题目</h4>
+                                    <p class="feature-desc">提供各类网络安全挑战题目，包括Web安全、密码学、逆向工程等</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon" aria-hidden="true">🏆</div>
+                                    <h4 class="feature-title">竞赛活动</h4>
+                                    <p class="feature-desc">组织和参与各种CTF竞赛活动，提升技术水平</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon" aria-hidden="true">📊</div>
+                                    <h4 class="feature-title">学习跟踪</h4>
+                                    <p class="feature-desc">记录学习进度，提供个性化的学习建议和统计分析</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon" aria-hidden="true">👥</div>
+                                    <h4 class="feature-title">社区交流</h4>
+                                    <p class="feature-desc">与其他安全爱好者交流学习，分享经验和技术</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">1.2 服务对象</h3>
+                            <p>本平台面向以下用户群体：</p>
+                            <ul class="target-users">
+                                <li>网络安全专业学生和从业者</li>
+                                <li>对网络安全技术感兴趣的学习者</li>
+                                <li>参与CTF竞赛的个人和团队</li>
+                                <li>网络安全教育工作者</li>
+                            </ul>
+
+                            <h3 class="subsection-title">1.3 服务范围</h3>
+                            <div class="service-scope">
+                                <div class="scope-item">
+                                    <strong>✅ 包含服务：</strong>
+                                    <span>题目访问、竞赛参与、成绩记录、学习资源、技术支持</span>
+                                </div>
+                                <div class="scope-item">
+                                    <strong>❌ 不包含服务：</strong>
+                                    <span>线下培训、个人辅导、商业咨询、技术外包</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第2节：用户注册 -->
+                    <section id="section-2" class="terms-section">
+                        <h2 class="section-title">2. 用户注册</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">2.1 注册条件</h3>
+                            <div class="registration-requirements">
+                                <div class="requirement-card">
+                                    <div class="requirement-icon" aria-hidden="true">🎂</div>
+                                    <h4 class="requirement-title">年龄要求</h4>
+                                    <p class="requirement-desc">年满13周岁，未满18周岁需监护人同意</p>
+                                </div>
+                                <div class="requirement-card">
+                                    <div class="requirement-icon" aria-hidden="true">📧</div>
+                                    <h4 class="requirement-title">有效邮箱</h4>
+                                    <p class="requirement-desc">提供真实有效的电子邮箱地址用于验证</p>
+                                </div>
+                                <div class="requirement-card">
+                                    <div class="requirement-icon" aria-hidden="true">✅</div>
+                                    <h4 class="requirement-title">同意条款</h4>
+                                    <p class="requirement-desc">阅读并同意本服务条款和隐私政策</p>
+                                </div>
+                                <div class="requirement-card">
+                                    <div class="requirement-icon" aria-hidden="true">🚫</div>
+                                    <h4 class="requirement-title">无违规记录</h4>
+                                    <p class="requirement-desc">未曾因违规行为被平台永久封禁</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">2.2 账户责任</h3>
+                            <div class="account-responsibilities">
+                                <div class="responsibility-item">
+                                    <h4 class="responsibility-title">🔐 账户安全</h4>
+                                    <ul class="responsibility-list">
+                                        <li>妥善保管账户密码，不得与他人共享</li>
+                                        <li>发现账户异常应立即联系客服</li>
+                                        <li>定期更新密码，使用强密码策略</li>
+                                    </ul>
+                                </div>
+                                <div class="responsibility-item">
+                                    <h4 class="responsibility-title">📝 信息真实</h4>
+                                    <ul class="responsibility-list">
+                                        <li>提供真实、准确的注册信息</li>
+                                        <li>及时更新个人资料变更</li>
+                                        <li>不得冒用他人身份注册</li>
+                                    </ul>
+                                </div>
+                                <div class="responsibility-item">
+                                    <h4 class="responsibility-title">⚖️ 合规使用</h4>
+                                    <ul class="responsibility-list">
+                                        <li>遵守平台使用规则和竞赛规则</li>
+                                        <li>不得进行违法违规活动</li>
+                                        <li>承担账户下所有活动的责任</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">2.3 账户管理</h3>
+                            <div class="account-management">
+                                <div class="management-option">
+                                    <strong>账户暂停：</strong>用户可申请临时暂停账户，暂停期间无法参与竞赛
+                                </div>
+                                <div class="management-option">
+                                    <strong>账户注销：</strong>用户可申请永久注销账户，注销后数据将被删除
+                                </div>
+                                <div class="management-option">
+                                    <strong>账户恢复：</strong>暂停的账户可申请恢复，需要重新验证身份
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第3节：使用规则 -->
+                    <section id="section-3" class="terms-section">
+                        <h2 class="section-title">3. 使用规则</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">3.1 允许行为</h3>
+                            <div class="allowed-behaviors">
+                                <div class="behavior-card allowed">
+                                    <div class="behavior-icon" aria-hidden="true">✅</div>
+                                    <h4 class="behavior-title">学习研究</h4>
+                                    <p class="behavior-desc">使用平台资源进行网络安全技术学习和研究</p>
+                                </div>
+                                <div class="behavior-card allowed">
+                                    <div class="behavior-icon" aria-hidden="true">✅</div>
+                                    <h4 class="behavior-title">公平竞赛</h4>
+                                    <p class="behavior-desc">遵守竞赛规则，公平参与各类CTF活动</p>
+                                </div>
+                                <div class="behavior-card allowed">
+                                    <div class="behavior-icon" aria-hidden="true">✅</div>
+                                    <h4 class="behavior-title">技术交流</h4>
+                                    <p class="behavior-desc">与其他用户进行技术讨论和经验分享</p>
+                                </div>
+                                <div class="behavior-card allowed">
+                                    <div class="behavior-icon" aria-hidden="true">✅</div>
+                                    <h4 class="behavior-title">合理使用</h4>
+                                    <p class="behavior-desc">在合理范围内使用平台功能和资源</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">3.2 禁止行为</h3>
+                            <div class="prohibited-behaviors">
+                                <div class="behavior-card prohibited">
+                                    <div class="behavior-icon" aria-hidden="true">❌</div>
+                                    <h4 class="behavior-title">恶意攻击</h4>
+                                    <p class="behavior-desc">对平台基础设施进行攻击或破坏</p>
+                                </div>
+                                <div class="behavior-card prohibited">
+                                    <div class="behavior-icon" aria-hidden="true">❌</div>
+                                    <h4 class="behavior-title">作弊行为</h4>
+                                    <p class="behavior-desc">使用外挂、脚本或其他不正当手段获取分数</p>
+                                </div>
+                                <div class="behavior-card prohibited">
+                                    <div class="behavior-icon" aria-hidden="true">❌</div>
+                                    <h4 class="behavior-title">账户共享</h4>
+                                    <p class="behavior-desc">与他人共享账户或代替他人参与竞赛</p>
+                                </div>
+                                <div class="behavior-card prohibited">
+                                    <div class="behavior-icon" aria-hidden="true">❌</div>
+                                    <h4 class="behavior-title">恶意内容</h4>
+                                    <p class="behavior-desc">发布违法、有害或不当内容</p>
+                                </div>
+                                <div class="behavior-card prohibited">
+                                    <div class="behavior-icon" aria-hidden="true">❌</div>
+                                    <h4 class="behavior-title">商业滥用</h4>
+                                    <p class="behavior-desc">未经授权进行商业推广或营销活动</p>
+                                </div>
+                                <div class="behavior-card prohibited">
+                                    <div class="behavior-icon" aria-hidden="true">❌</div>
+                                    <h4 class="behavior-title">系统滥用</h4>
+                                    <p class="behavior-desc">过度占用系统资源或干扰正常服务</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">3.3 违规处理</h3>
+                            <div class="violation-handling">
+                                <div class="penalty-level">
+                                    <h4 class="penalty-title">⚠️ 轻微违规</h4>
+                                    <p class="penalty-desc">警告提醒、限制功能使用1-7天</p>
+                                    <p class="penalty-examples">如：不当言论、轻微作弊行为</p>
+                                </div>
+                                <div class="penalty-level">
+                                    <h4 class="penalty-title">🚫 严重违规</h4>
+                                    <p class="penalty-desc">暂停账户7-30天、取消竞赛成绩</p>
+                                    <p class="penalty-examples">如：恶意攻击、严重作弊、账户共享</p>
+                                </div>
+                                <div class="penalty-level">
+                                    <h4 class="penalty-title">⛔ 极严重违规</h4>
+                                    <p class="penalty-desc">永久封禁账户、法律追责</p>
+                                    <p class="penalty-examples">如：违法犯罪、恶意破坏、重复严重违规</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第4节：竞赛规则 -->
+                    <section id="section-4" class="terms-section">
+                        <h2 class="section-title">4. 竞赛规则</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">4.1 竞赛类型</h3>
+                            <div class="competition-types">
+                                <div class="competition-card">
+                                    <div class="competition-icon" aria-hidden="true">⚡</div>
+                                    <h4 class="competition-title">实时竞赛</h4>
+                                    <p class="competition-desc">限时进行的在线CTF竞赛，实时排名</p>
+                                    <ul class="competition-features">
+                                        <li>固定时间段内进行</li>
+                                        <li>实时更新排行榜</li>
+                                        <li>团队或个人参与</li>
+                                    </ul>
+                                </div>
+                                <div class="competition-card">
+                                    <div class="competition-icon" aria-hidden="true">📚</div>
+                                    <h4 class="competition-title">练习模式</h4>
+                                    <p class="competition-desc">随时可以参与的练习题目，提升技能</p>
+                                    <ul class="competition-features">
+                                        <li>无时间限制</li>
+                                        <li>可重复挑战</li>
+                                        <li>记录最佳成绩</li>
+                                    </ul>
+                                </div>
+                                <div class="competition-card">
+                                    <div class="competition-icon" aria-hidden="true">🏆</div>
+                                    <h4 class="competition-title">锦标赛</h4>
+                                    <p class="competition-desc">大型官方竞赛活动，设有奖励</p>
+                                    <ul class="competition-features">
+                                        <li>官方组织举办</li>
+                                        <li>设置奖品奖励</li>
+                                        <li>严格审核机制</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">4.2 参赛规则</h3>
+                            <div class="participation-rules">
+                                <div class="rule-category">
+                                    <h4 class="rule-title">📝 报名规则</h4>
+                                    <ul class="rule-list">
+                                        <li>按时完成报名，提供真实信息</li>
+                                        <li>团队赛需指定队长，成员不超过限制</li>
+                                        <li>一人只能参加一个团队</li>
+                                        <li>报名后不得随意退出</li>
+                                    </ul>
+                                </div>
+                                <div class="rule-category">
+                                    <h4 class="rule-title">⏰ 时间规则</h4>
+                                    <ul class="rule-list">
+                                        <li>严格按照竞赛时间进行</li>
+                                        <li>迟到不得补时</li>
+                                        <li>提前结束不影响成绩</li>
+                                        <li>系统时间为准</li>
+                                    </ul>
+                                </div>
+                                <div class="rule-category">
+                                    <h4 class="rule-title">🎯 答题规则</h4>
+                                    <ul class="rule-list">
+                                        <li>独立完成，不得抄袭</li>
+                                        <li>提交正确Flag获得分数</li>
+                                        <li>错误提交可能扣分</li>
+                                        <li>部分题目有提交次数限制</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">4.3 评分机制</h3>
+                            <div class="scoring-system">
+                                <div class="scoring-method">
+                                    <h4 class="scoring-title">🔢 基础评分</h4>
+                                    <p class="scoring-desc">根据题目难度设定基础分值，完成题目获得相应分数</p>
+                                </div>
+                                <div class="scoring-method">
+                                    <h4 class="scoring-title">⏱️ 时间加成</h4>
+                                    <p class="scoring-desc">越早完成题目，获得的时间加成越多</p>
+                                </div>
+                                <div class="scoring-method">
+                                    <h4 class="scoring-title">📉 动态评分</h4>
+                                    <p class="scoring-desc">根据解题人数动态调整分值，解题人数越少分值越高</p>
+                                </div>
+                                <div class="scoring-method">
+                                    <h4 class="scoring-title">🏅 额外奖励</h4>
+                                    <p class="scoring-desc">首次解题、连续解题等特殊成就可获得额外奖励分</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第5节：知识产权 -->
+                    <section id="section-5" class="terms-section">
+                        <h2 class="section-title">5. 知识产权</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">5.1 平台权利</h3>
+                            <div class="platform-rights">
+                                <div class="right-item">
+                                    <h4 class="right-title">🏛️ 平台内容</h4>
+                                    <p class="right-desc">平台上的题目、教程、界面设计等内容的知识产权归平台所有</p>
+                                </div>
+                                <div class="right-item">
+                                    <h4 class="right-title">🔒 商标权利</h4>
+                                    <p class="right-desc">QHUCTF及相关标识的商标权归平台所有，未经授权不得使用</p>
+                                </div>
+                                <div class="right-item">
+                                    <h4 class="right-title">💻 技术专利</h4>
+                                    <p class="right-desc">平台的技术实现、算法等可能涉及的专利权归平台所有</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">5.2 用户权利</h3>
+                            <div class="user-rights">
+                                <div class="right-item">
+                                    <h4 class="right-title">📝 原创内容</h4>
+                                    <p class="right-desc">用户创作的原创内容（如解题思路、技术文章）的知识产权归用户所有</p>
+                                </div>
+                                <div class="right-item">
+                                    <h4 class="right-title">🤝 授权使用</h4>
+                                    <p class="right-desc">用户发布内容时，授权平台在服务范围内使用、展示该内容</p>
+                                </div>
+                                <div class="right-item">
+                                    <h4 class="right-title">🔄 撤回权利</h4>
+                                    <p class="right-desc">用户可以删除自己发布的内容，但已产生的影响无法撤销</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">5.3 侵权处理</h3>
+                            <div class="infringement-handling">
+                                <div class="handling-step">
+                                    <h4 class="step-title">📧 举报机制</h4>
+                                    <p class="step-desc">发现侵权内容可通过邮件或平台举报功能进行举报</p>
+                                </div>
+                                <div class="handling-step">
+                                    <h4 class="step-title">🔍 调查处理</h4>
+                                    <p class="step-desc">收到举报后，我们将在7个工作日内进行调查并处理</p>
+                                </div>
+                                <div class="handling-step">
+                                    <h4 class="step-title">⚖️ 法律途径</h4>
+                                    <p class="step-desc">严重侵权行为将通过法律途径解决，追究相关责任</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第6节：用户行为 -->
+                    <section id="section-6" class="terms-section">
+                        <h2 class="section-title">6. 用户行为</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">6.1 社区准则</h3>
+                            <div class="community-guidelines">
+                                <div class="guideline-card positive">
+                                    <div class="guideline-icon" aria-hidden="true">🤝</div>
+                                    <h4 class="guideline-title">友善交流</h4>
+                                    <p class="guideline-desc">保持友善、尊重的态度与其他用户交流</p>
+                                </div>
+                                <div class="guideline-card positive">
+                                    <div class="guideline-icon" aria-hidden="true">📚</div>
+                                    <h4 class="guideline-title">知识分享</h4>
+                                    <p class="guideline-desc">积极分享技术知识和学习经验</p>
+                                </div>
+                                <div class="guideline-card positive">
+                                    <div class="guideline-icon" aria-hidden="true">🎯</div>
+                                    <h4 class="guideline-title">专业讨论</h4>
+                                    <p class="guideline-desc">围绕技术话题进行专业、建设性的讨论</p>
+                                </div>
+                                <div class="guideline-card negative">
+                                    <div class="guideline-icon" aria-hidden="true">🚫</div>
+                                    <h4 class="guideline-title">禁止骚扰</h4>
+                                    <p class="guideline-desc">不得进行人身攻击、骚扰或歧视行为</p>
+                                </div>
+                                <div class="guideline-card negative">
+                                    <div class="guideline-icon" aria-hidden="true">❌</div>
+                                    <h4 class="guideline-title">禁止垃圾信息</h4>
+                                    <p class="guideline-desc">不得发布垃圾信息、广告或无关内容</p>
+                                </div>
+                                <div class="guideline-card negative">
+                                    <div class="guideline-icon" aria-hidden="true">⚠️</div>
+                                    <h4 class="guideline-title">禁止违法内容</h4>
+                                    <p class="guideline-desc">不得发布违法、有害或不当内容</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">6.2 内容规范</h3>
+                            <div class="content-standards">
+                                <div class="standard-category">
+                                    <h4 class="standard-title">✅ 鼓励内容</h4>
+                                    <ul class="standard-list">
+                                        <li>技术教程和学习资源</li>
+                                        <li>解题思路和方法分享</li>
+                                        <li>安全工具和技术讨论</li>
+                                        <li>竞赛经验和心得体会</li>
+                                    </ul>
+                                </div>
+                                <div class="standard-category">
+                                    <h4 class="standard-title">❌ 禁止内容</h4>
+                                    <ul class="standard-list">
+                                        <li>恶意软件和攻击代码</li>
+                                        <li>违法犯罪相关内容</li>
+                                        <li>侵犯他人隐私的信息</li>
+                                        <li>商业广告和推广信息</li>
+                                        <li>仇恨言论和歧视内容</li>
+                                        <li>色情、暴力等不当内容</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">6.3 举报机制</h3>
+                            <div class="reporting-system">
+                                <div class="reporting-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4 class="step-title">发现问题</h4>
+                                        <p class="step-desc">发现违规内容或行为</p>
+                                    </div>
+                                </div>
+                                <div class="reporting-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4 class="step-title">提交举报</h4>
+                                        <p class="step-desc">通过举报按钮或邮件提交举报</p>
+                                    </div>
+                                </div>
+                                <div class="reporting-step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4 class="step-title">审核处理</h4>
+                                        <p class="step-desc">管理员审核并采取相应措施</p>
+                                    </div>
+                                </div>
+                                <div class="reporting-step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h4 class="step-title">结果反馈</h4>
+                                        <p class="step-desc">向举报者反馈处理结果</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第7节：服务变更 -->
+                    <section id="section-7" class="terms-section">
+                        <h2 class="section-title">7. 服务变更</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">7.1 服务更新</h3>
+                            <div class="service-updates">
+                                <div class="update-type">
+                                    <h4 class="update-title">🔧 功能更新</h4>
+                                    <p class="update-desc">我们会定期更新平台功能，提升用户体验</p>
+                                    <ul class="update-details">
+                                        <li>新增题目类型和难度</li>
+                                        <li>优化界面设计和交互</li>
+                                        <li>增强安全防护措施</li>
+                                        <li>改进性能和稳定性</li>
+                                    </ul>
+                                </div>
+                                <div class="update-type">
+                                    <h4 class="update-title">📋 规则调整</h4>
+                                    <p class="update-desc">根据实际情况调整竞赛规则和评分机制</p>
+                                    <ul class="update-details">
+                                        <li>竞赛时间和形式调整</li>
+                                        <li>评分算法优化</li>
+                                        <li>奖励机制更新</li>
+                                        <li>违规处理标准修订</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">7.2 通知机制</h3>
+                            <div class="notification-methods">
+                                <div class="notification-card">
+                                    <div class="notification-icon" aria-hidden="true">📧</div>
+                                    <h4 class="notification-title">邮件通知</h4>
+                                    <p class="notification-desc">重要变更通过注册邮箱发送通知</p>
+                                </div>
+                                <div class="notification-card">
+                                    <div class="notification-icon" aria-hidden="true">📢</div>
+                                    <h4 class="notification-title">站内公告</h4>
+                                    <p class="notification-desc">在平台首页发布公告信息</p>
+                                </div>
+                                <div class="notification-card">
+                                    <div class="notification-icon" aria-hidden="true">🔔</div>
+                                    <h4 class="notification-title">系统通知</h4>
+                                    <p class="notification-desc">通过站内消息推送重要通知</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">7.3 服务中断</h3>
+                            <div class="service-interruption">
+                                <div class="interruption-scenario">
+                                    <h4 class="scenario-title">🔧 计划维护</h4>
+                                    <p class="scenario-desc">定期维护和升级，提前24小时通知</p>
+                                </div>
+                                <div class="interruption-scenario">
+                                    <h4 class="scenario-title">⚡ 紧急维护</h4>
+                                    <p class="scenario-desc">紧急安全修复，可能临时中断服务</p>
+                                </div>
+                                <div class="interruption-scenario">
+                                    <h4 class="scenario-title">🌐 不可抗力</h4>
+                                    <p class="scenario-desc">因自然灾害、网络故障等原因导致的服务中断</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第8节：免责声明 -->
+                    <section id="section-8" class="terms-section">
+                        <h2 class="section-title">8. 免责声明</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">8.1 服务限制</h3>
+                            <div class="service-limitations">
+                                <div class="limitation-item">
+                                    <h4 class="limitation-title">🌐 网络依赖</h4>
+                                    <p class="limitation-desc">服务依赖互联网连接，网络问题可能影响使用体验</p>
+                                </div>
+                                <div class="limitation-item">
+                                    <h4 class="limitation-title">💻 设备兼容</h4>
+                                    <p class="limitation-desc">不保证在所有设备和浏览器上完美运行</p>
+                                </div>
+                                <div class="limitation-item">
+                                    <h4 class="limitation-title">📊 数据准确</h4>
+                                    <p class="limitation-desc">尽力保证数据准确，但不承担因数据错误造成的损失</p>
+                                </div>
+                                <div class="limitation-item">
+                                    <h4 class="limitation-title">🔒 安全风险</h4>
+                                    <p class="limitation-desc">用户需自行承担使用过程中的安全风险</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">8.2 责任限制</h3>
+                            <div class="liability-limitations">
+                                <div class="liability-card">
+                                    <h4 class="liability-title">💰 经济损失</h4>
+                                    <p class="liability-desc">不承担用户因使用服务而产生的直接或间接经济损失</p>
+                                </div>
+                                <div class="liability-card">
+                                    <h4 class="liability-title">📱 第三方服务</h4>
+                                    <p class="liability-desc">不对第三方服务的可用性和安全性承担责任</p>
+                                </div>
+                                <div class="liability-card">
+                                    <h4 class="liability-title">👥 用户行为</h4>
+                                    <p class="liability-desc">不对用户的违法违规行为承担责任</p>
+                                </div>
+                                <div class="liability-card">
+                                    <h4 class="liability-title">🔄 服务变更</h4>
+                                    <p class="liability-desc">保留随时修改或终止服务的权利</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">8.3 风险提示</h3>
+                            <div class="risk-warnings">
+                                <div class="warning-item">
+                                    <div class="warning-icon" aria-hidden="true">⚠️</div>
+                                    <h4 class="warning-title">学习风险</h4>
+                                    <p class="warning-desc">网络安全技术学习存在一定风险，请在合法范围内使用所学知识</p>
+                                </div>
+                                <div class="warning-item">
+                                    <div class="warning-icon" aria-hidden="true">🔐</div>
+                                    <h4 class="warning-title">隐私风险</h4>
+                                    <p class="warning-desc">请妥善保护个人隐私信息，不要在平台上分享敏感数据</p>
+                                </div>
+                                <div class="warning-item">
+                                    <div class="warning-icon" aria-hidden="true">💻</div>
+                                    <h4 class="warning-title">技术风险</h4>
+                                    <p class="warning-desc">使用技术工具和方法时请谨慎，避免对他人系统造成损害</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第9节：争议解决 -->
+                    <section id="section-9" class="terms-section">
+                        <h2 class="section-title">9. 争议解决</h2>
+                        <div class="section-content">
+                            <h3 class="subsection-title">9.1 协商解决</h3>
+                            <div class="negotiation-process">
+                                <p>发生争议时，我们鼓励通过友好协商的方式解决：</p>
+                                <div class="process-steps">
+                                    <div class="process-step">
+                                        <div class="step-icon" aria-hidden="true">📞</div>
+                                        <h4 class="step-title">联系客服</h4>
+                                        <p class="step-desc">首先通过客服渠道说明问题</p>
+                                    </div>
+                                    <div class="process-step">
+                                        <div class="step-icon" aria-hidden="true">💬</div>
+                                        <h4 class="step-title">沟通协商</h4>
+                                        <p class="step-desc">双方进行充分沟通，寻求解决方案</p>
+                                    </div>
+                                    <div class="process-step">
+                                        <div class="step-icon" aria-hidden="true">✅</div>
+                                        <h4 class="step-title">达成协议</h4>
+                                        <p class="step-desc">达成一致意见，签署解决协议</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">9.2 法律途径</h3>
+                            <div class="legal-resolution">
+                                <div class="legal-info">
+                                    <h4 class="legal-title">⚖️ 适用法律</h4>
+                                    <p class="legal-desc">本协议的解释和执行适用中华人民共和国法律</p>
+                                </div>
+                                <div class="legal-info">
+                                    <h4 class="legal-title">🏛️ 管辖法院</h4>
+                                    <p class="legal-desc">因本协议产生的争议由平台所在地人民法院管辖</p>
+                                </div>
+                                <div class="legal-info">
+                                    <h4 class="legal-title">📋 仲裁条款</h4>
+                                    <p class="legal-desc">双方可协商选择仲裁方式解决争议</p>
+                                </div>
+                            </div>
+
+                            <h3 class="subsection-title">9.3 申诉机制</h3>
+                            <div class="appeal-mechanism">
+                                <div class="appeal-scenario">
+                                    <h4 class="appeal-title">🚫 账户处罚申诉</h4>
+                                    <p class="appeal-desc">对账户封禁、限制等处罚不服的，可提交申诉</p>
+                                    <p class="appeal-process">提供相关证据 → 管理员审核 → 15个工作日内回复</p>
+                                </div>
+                                <div class="appeal-scenario">
+                                    <h4 class="appeal-title">🏆 成绩争议申诉</h4>
+                                    <p class="appeal-desc">对竞赛成绩、排名有异议的，可申请复核</p>
+                                    <p class="appeal-process">提交申请 → 技术复核 → 7个工作日内处理</p>
+                                </div>
+                                <div class="appeal-scenario">
+                                    <h4 class="appeal-title">🔧 服务问题申诉</h4>
+                                    <p class="appeal-desc">对平台服务质量不满的，可投诉反馈</p>
+                                    <p class="appeal-process">详细描述问题 → 客服跟进 → 持续改进</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第10节：联系我们 -->
+                    <section id="section-10" class="terms-section">
+                        <h2 class="section-title">10. 联系我们</h2>
+                        <div class="section-content">
+                            <div class="contact-intro">
+                                <p>如果您对本服务条款有任何疑问或需要帮助，请通过以下方式联系我们：</p>
+                            </div>
+
+                            <div class="contact-grid">
+                                <div class="contact-card">
+                                    <div class="contact-icon" aria-hidden="true">📧</div>
+                                    <h4 class="contact-title">邮箱支持</h4>
+                                    <div class="contact-details">
+                                        <p><strong>客服邮箱：</strong><a href="mailto:support@qhuctf.com">support@qhuctf.com</a></p>
+                                        <p><strong>法务邮箱：</strong><a href="mailto:legal@qhuctf.com">legal@qhuctf.com</a></p>
+                                        <p><strong>技术邮箱：</strong><a href="mailto:tech@qhuctf.com">tech@qhuctf.com</a></p>
+                                    </div>
+                                </div>
+                                <div class="contact-card">
+                                    <div class="contact-icon" aria-hidden="true">🌐</div>
+                                    <h4 class="contact-title">在线帮助</h4>
+                                    <div class="contact-details">
+                                        <p><strong>帮助中心：</strong><a href="../info/help.html">help.html</a></p>
+                                        <p><strong>常见问题：</strong>查看FAQ解答</p>
+                                        <p><strong>用户手册：</strong>详细使用指南</p>
+                                    </div>
+                                </div>
+                                <div class="contact-card">
+                                    <div class="contact-icon" aria-hidden="true">💬</div>
+                                    <h4 class="contact-title">社区交流</h4>
+                                    <div class="contact-details">
+                                        <p><strong>用户论坛：</strong>与其他用户交流</p>
+                                        <p><strong>技术讨论：</strong>参与技术话题</p>
+                                        <p><strong>意见反馈：</strong>提出改进建议</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="response-commitment">
+                                <h3 class="subsection-title">10.1 服务承诺</h3>
+                                <div class="commitment-grid">
+                                    <div class="commitment-item">
+                                        <div class="commitment-icon" aria-hidden="true">⏰</div>
+                                        <h4 class="commitment-title">响应时间</h4>
+                                        <p class="commitment-desc">工作日24小时内回复邮件咨询</p>
+                                    </div>
+                                    <div class="commitment-item">
+                                        <div class="commitment-icon" aria-hidden="true">🎯</div>
+                                        <h4 class="commitment-title">解决效率</h4>
+                                        <p class="commitment-desc">7个工作日内解决常见问题</p>
+                                    </div>
+                                    <div class="commitment-item">
+                                        <div class="commitment-icon" aria-hidden="true">📞</div>
+                                        <h4 class="commitment-title">专业服务</h4>
+                                        <p class="commitment-desc">提供专业、耐心的技术支持</p>
+                                    </div>
+                                    <div class="commitment-item">
+                                        <div class="commitment-icon" aria-hidden="true">🔄</div>
+                                        <h4 class="commitment-title">持续改进</h4>
+                                        <p class="commitment-desc">根据反馈持续优化服务质量</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 条款确认 -->
+                <div class="terms-acknowledgment">
+                    <div class="acknowledgment-card">
+                        <h3 class="acknowledgment-title">📋 条款确认</h3>
+                        <p class="acknowledgment-text">
+                            通过注册和使用QHUCTF竞赛平台，您确认已仔细阅读、充分理解并完全同意本服务条款的所有内容。
+                        </p>
+                        <div class="acknowledgment-actions">
+                            <a href="../core/register.html" class="btn btn-primary">注册账户</a>
+                            <a href="privacy.html" class="btn btn-secondary">查看隐私政策</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- 快速导航 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">快速导航</h3>
+                    <ul class="footer-links">
+                        <li><a href="../core/index.html" class="footer-link">首页</a></li>
+                        <li><a href="../core/challenges.html" class="footer-link">题目列表</a></li>
+                        <li><a href="scoreboard.html" class="footer-link">排行榜</a></li>
+                        <li><a href="../core/login.html" class="footer-link">用户登录</a></li>
+                    </ul>
+                </div>
+
+                <!-- 法律信息 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">法律信息</h3>
+                    <ul class="footer-links">
+                        <li><a href="terms.html" class="footer-link" aria-current="page">服务条款</a></li>
+                        <li><a href="privacy.html" class="footer-link">隐私政策</a></li>
+                        <li><a href="../info/help.html" class="footer-link">帮助中心</a></li>
+                        <li><a href="mailto:legal@qhuctf.com" class="footer-link">法律咨询</a></li>
+                    </ul>
+                </div>
+
+                <!-- 联系我们 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">联系我们</h3>
+                    <div class="contact-info">
+                        <p class="contact-item">
+                            <span class="contact-icon" aria-hidden="true">📧</span>
+                            <a href="mailto:support@qhuctf.com" class="contact-link">support@qhuctf.com</a>
+                        </p>
+                        <p class="contact-item">
+                            <span class="contact-icon" aria-hidden="true">🌐</span>
+                            <span class="contact-text">QHUCTF竞赛平台</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权信息 -->
+            <div class="footer-bottom">
+                <p class="copyright">
+                    &copy; 2025 QHUCTF竞赛平台. 保留所有权利.
+                </p>
+                <div class="footer-meta">
+                    <a href="terms.html" class="footer-link" aria-current="page">服务条款</a>
+                    <span class="separator">|</span>
+                    <a href="privacy.html" class="footer-link">隐私政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

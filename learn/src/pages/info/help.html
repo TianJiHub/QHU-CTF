@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QHU网络安全CTF竞赛平台 - QHU-CTF">
+    <meta name="keywords" content="CTF, 帮助中心, 使用指南, FAQ, 技术支持, 网络安全">
+    <title>QHU-CTF - QHU网络安全CTF竞赛平台</title>
+    
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* 导航栏样式 */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .navbar h1 a {
+            text-decoration: none;
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .navbar h1 a:hover {
+            color: #764ba2;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white !important;
+            padding: 0.7rem 1.5rem !important;
+            border-radius: 25px;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb-nav {
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .breadcrumb-item {
+            color: #666;
+        }
+
+        .breadcrumb-item:not(:last-child)::after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: #999;
+        }
+
+        .breadcrumb-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 帮助中心样式 */
+        .help-center {
+            padding: 0;
+        }
+
+        .help-container {
+            max-width: 100%;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+        }
+
+        .help-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .help-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 搜索框样式 */
+        .help-search {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-input-group {
+            display: flex;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 1rem 1.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+
+        /* 快速导航网格 */
+        .quick-navigation {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .quick-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quick-nav-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .quick-nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .nav-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .nav-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* 帮助内容区域 */
+        .help-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(102, 126, 234, 0.02);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .help-content {
+            margin-top: 1.5rem;
+        }
+
+        /* 指南步骤样式 */
+        .guide-step {
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-title {
+            color: #667eea;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .step-list {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .step-tips {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .tips-title {
+            color: #667eea;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tips-list {
+            margin-left: 1rem;
+        }
+
+        .tips-list li {
+            margin-bottom: 0.3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 功能网格 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .feature-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 分类网格 */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .category-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .category-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 流程步骤 */
+        .solving-process {
+            margin: 2rem 0;
+        }
+
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-info {
+            flex: 1;
+        }
+
+        .step-info .step-title {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .step-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Flag格式样式 */
+        .flag-format {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            margin: 1.5rem 0;
+        }
+
+        .flag-example {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            border-left: 3px solid #667eea;
+        }
+
+        /* 联系方式样式 */
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .contact-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-title {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .contact-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .contact-button:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .contact-button.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .contact-button.secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* FAQ样式 */
+        .faq-list {
+            margin: 2rem 0;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .faq-question:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 页脚样式 */
+        .site-footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            text-align: center;
+            color: #95a5a6;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .navbar-container {
+                padding: 0 1rem;
+            }
+            
+            .main-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .quick-nav-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+            
+            .help-title {
+                font-size: 2rem;
+            }
+            
+            .help-subtitle {
+                font-size: 1rem;
+            }
+            
+            .quick-nav-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-nav-card {
+                padding: 1.5rem;
+            }
+            
+            .contact-methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-container {
+                padding: 0 1rem;
+                min-height: 60px;
+            }
+            
+            .main-content {
+                margin: 0.5rem;
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            
+            .help-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .help-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .quick-nav-card {
+                padding: 1rem;
+            }
+            
+            .nav-icon {
+                font-size: 2rem;
+            }
+            
+            .contact-card {
+                padding: 1.5rem;
+            }
+            
+            .back-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* 焦点样式 */
+        a:focus, button:focus, input:focus, select:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* 深色主题支持 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                color: #ecf0f1;
+            }
+            
+            .site-header {
+                background: rgba(44, 62, 80, 0.95);
+            }
+            
+            .main-content {
+                background: #34495e;
+                color: #ecf0f1;
+            }
+            
+            .help-section {
+                background: rgba(102, 126, 234, 0.1);
+            }
+            
+            .quick-nav-card, .feature-card, .category-card, .contact-card, .guide-step, .process-step, .faq-item {
+                background: #2c3e50;
+                color: #ecf0f1;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/responsive-styles.css">
+    <link rel="stylesheet" href="../assets/css/theme-system.css">
+    <meta name="author" content="sunsky">
+    <meta property="og:title" content="QHU-CTF">
+    <meta property="og:description" content="QHU网络安全CTF竞赛平台">
+</head>
+<body class="light-theme">
+    <!-- 页面头部 -->
+    <header class="site-header" role="banner">
+            <!-- 导航栏 -->
+    <nav class="navbar" role="navigation" aria-label="主导航">
+        <div class="nav-container">
+            <a href="../core/index.html" class="nav-brand" aria-label="QHUCTF首页">🛡️ QHUCTF</a>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="切换导航菜单" aria-expanded="false">☰</button>
+            <ul class="nav-menu" id="navMenu" role="menubar">
+                <li role="none"><a href="../core/index.html" class="nav-link" role="menuitem">首页</a></li>
+                <li role="none"><a href="../core/challenges.html" class="nav-link" role="menuitem">题目</a></li>
+                <li role="none"><a href="scoreboard.html" class="nav-link" role="menuitem">排行榜</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">团队</a></li>
+                <li role="none"><a href="not-implemented.html" class="nav-link" role="menuitem">用户</a></li>
+                <li role="none"><a href="../core/login.html" class="nav-link" role="menuitem">登录</a></li>
+                <li role="none"><button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换深浅主题">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content" role="main">
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb-nav" aria-label="面包屑导航">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item">
+                    <a href="../core/index.html" class="breadcrumb-link">首页</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">帮助中心</li>
+            </ol>
+        </nav>
+
+        <!-- 帮助中心内容 -->
+        <article class="help-center">
+            <div class="help-container">
+                <!-- 帮助中心头部 -->
+                <header class="help-header">
+                    <h1 class="help-title">帮助中心</h1>
+                    <p class="help-subtitle">欢迎来到QHUCTF竞赛平台帮助中心，这里有您需要的所有使用指南和解答</p>
+                    
+                    <!-- 搜索框 -->
+                    <div class="help-search">
+                        <form class="search-form" role="search" aria-label="搜索帮助内容" action="#" method="post">
+                            <div class="search-input-group">
+                                <input type="search" 
+                                       class="search-input" 
+                                       placeholder="搜索帮助内容..." 
+                                       aria-label="搜索帮助内容"
+                                       autocomplete="off">
+                                <button type="submit" class="search-button" aria-label="搜索">
+                                    <span class="search-icon" aria-hidden="true">🔍</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </header>
+
+                <!-- 快速导航 -->
+                <section class="quick-navigation" aria-labelledby="quick-nav-title">
+                    <h2 id="quick-nav-title" class="section-title">快速导航</h2>
+                    <div class="quick-nav-grid">
+                        <a href="#getting-started" class="quick-nav-card">
+                            <div class="nav-icon" aria-hidden="true">🚀</div>
+                            <h3 class="nav-title">新手入门</h3>
+                            <p class="nav-desc">平台注册、基础操作指南</p>
+                        </a>
+                        <a href="#challenges-guide" class="quick-nav-card">
+                            <div class="nav-icon" aria-hidden="true">🎯</div>
+                            <h3 class="nav-title">题目指南</h3>
+                            <p class="nav-desc">如何解题、提交Flag</p>
+                        </a>
+                        <a href="#competition-rules" class="quick-nav-card">
+                            <div class="nav-icon" aria-hidden="true">🏆</div>
+                            <h3 class="nav-title">竞赛规则</h3>
+                            <p class="nav-desc">竞赛参与、评分机制</p>
+                        </a>
+                        <a href="#account-management" class="quick-nav-card">
+                            <div class="nav-icon" aria-hidden="true">👤</div>
+                            <h3 class="nav-title">账户管理</h3>
+                            <p class="nav-desc">个人资料、安全设置</p>
+                        </a>
+                        <a href="#technical-support" class="quick-nav-card">
+                            <div class="nav-icon" aria-hidden="true">🔧</div>
+                            <h3 class="nav-title">技术支持</h3>
+                            <p class="nav-desc">常见问题、故障排除</p>
+                        </a>
+                        <a href="#contact-us" class="quick-nav-card">
+                            <div class="nav-icon" aria-hidden="true">📞</div>
+                            <h3 class="nav-title">联系我们</h3>
+                            <p class="nav-desc">客服支持、意见反馈</p>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 新手入门 -->
+                <section id="getting-started" class="help-section" aria-labelledby="getting-started-title">
+                    <h2 id="getting-started-title" class="section-title">🚀 新手入门</h2>
+                    
+                    <div class="help-content">
+                        <div class="guide-step">
+                            <h3 class="step-title">第一步：注册账户</h3>
+                            <div class="step-content">
+                                <ol class="step-list">
+                                    <li>点击页面右上角的"注册"按钮</li>
+                                    <li>填写用户名、邮箱和密码</li>
+                                    <li>阅读并同意服务条款</li>
+                                    <li>点击"注册"完成账户创建</li>
+                                    <li>查收邮箱验证邮件并激活账户</li>
+                                </ol>
+                                <div class="step-tips">
+                                    <h4 class="tips-title">💡 注册小贴士</h4>
+                                    <ul class="tips-list">
+                                        <li>用户名建议使用英文字母和数字组合</li>
+                                        <li>密码至少8位，包含字母、数字和特殊字符</li>
+                                        <li>请使用真实有效的邮箱地址</li>
+                                        <li>注册后请及时验证邮箱</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-step">
+                            <h3 class="step-title">第二步：完善个人资料</h3>
+                            <div class="step-content">
+                                <ol class="step-list">
+                                    <li>登录后进入"个人中心"</li>
+                                    <li>上传头像（可选）</li>
+                                    <li>填写个人简介和技能标签</li>
+                                    <li>设置隐私选项</li>
+                                    <li>保存设置</li>
+                                </ol>
+                                <div class="profile-benefits">
+                                    <h4 class="benefits-title">✨ 完善资料的好处</h4>
+                                    <div class="benefits-grid">
+                                        <div class="benefit-item">
+                                            <span class="benefit-icon" aria-hidden="true">🏆</span>
+                                            <span class="benefit-text">提升个人形象</span>
+                                        </div>
+                                        <div class="benefit-item">
+                                            <span class="benefit-icon" aria-hidden="true">👥</span>
+                                            <span class="benefit-text">便于技术交流</span>
+                                        </div>
+                                        <div class="benefit-item">
+                                            <span class="benefit-icon" aria-hidden="true">🎯</span>
+                                            <span class="benefit-text">获得个性化推荐</span>
+                                        </div>
+                                        <div class="benefit-item">
+                                            <span class="benefit-icon" aria-hidden="true">🔒</span>
+                                            <span class="benefit-text">增强账户安全</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-step">
+                            <h3 class="step-title">第三步：熟悉平台功能</h3>
+                            <div class="step-content">
+                                <div class="feature-overview">
+                                    <div class="feature-card">
+                                        <div class="feature-icon" aria-hidden="true">🎯</div>
+                                        <h4 class="feature-title">题目挑战</h4>
+                                        <p class="feature-desc">浏览和解答各类CTF题目，提升技术水平</p>
+                                        <a href="../core/challenges.html" class="feature-link">开始挑战</a>
+                                    </div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon" aria-hidden="true">🏆</div>
+                                        <h4 class="feature-title">排行榜</h4>
+                                        <p class="feature-desc">查看个人排名和其他用户的成绩</p>
+                                        <a href="scoreboard.html" class="feature-link">查看排名</a>
+                                    </div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon" aria-hidden="true">📊</div>
+                                        <h4 class="feature-title">学习统计</h4>
+                                        <p class="feature-desc">跟踪学习进度和技能发展</p>
+                                        <a href="../core/profile.html" class="feature-link">查看统计</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 题目指南 -->
+                <section id="challenges-guide" class="help-section" aria-labelledby="challenges-guide-title">
+                    <h2 id="challenges-guide-title" class="section-title">🎯 题目指南</h2>
+                    
+                    <div class="help-content">
+                        <div class="guide-category">
+                            <h3 class="category-title">题目分类</h3>
+                            <div class="category-grid">
+                                <div class="category-card">
+                                    <div class="category-icon" aria-hidden="true">🌐</div>
+                                    <h4 class="category-name">Web安全</h4>
+                                    <p class="category-desc">SQL注入、XSS、CSRF等Web漏洞</p>
+                                    <div class="category-skills">
+                                        <span class="skill-tag">SQL注入</span>
+                                        <span class="skill-tag">XSS</span>
+                                        <span class="skill-tag">文件上传</span>
+                                    </div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" aria-hidden="true">🔐</div>
+                                    <h4 class="category-name">密码学</h4>
+                                    <p class="category-desc">加密算法、哈希函数、数字签名</p>
+                                    <div class="category-skills">
+                                        <span class="skill-tag">RSA</span>
+                                        <span class="skill-tag">AES</span>
+                                        <span class="skill-tag">哈希碰撞</span>
+                                    </div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" aria-hidden="true">💻</div>
+                                    <h4 class="category-name">逆向工程</h4>
+                                    <p class="category-desc">二进制分析、反汇编、调试</p>
+                                    <div class="category-skills">
+                                        <span class="skill-tag">IDA Pro</span>
+                                        <span class="skill-tag">GDB</span>
+                                        <span class="skill-tag">脱壳</span>
+                                    </div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" aria-hidden="true">🔍</div>
+                                    <h4 class="category-name">取证分析</h4>
+                                    <p class="category-desc">数字取证、日志分析、内存分析</p>
+                                    <div class="category-skills">
+                                        <span class="skill-tag">Volatility</span>
+                                        <span class="skill-tag">Wireshark</span>
+                                        <span class="skill-tag">文件恢复</span>
+                                    </div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" aria-hidden="true">🛠️</div>
+                                    <h4 class="category-name">杂项</h4>
+                                    <p class="category-desc">编程、算法、趣味解谜</p>
+                                    <div class="category-skills">
+                                        <span class="skill-tag">编程</span>
+                                        <span class="skill-tag">隐写术</span>
+                                        <span class="skill-tag">解谜</span>
+                                    </div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" aria-hidden="true">⚡</div>
+                                    <h4 class="category-name">二进制漏洞</h4>
+                                    <p class="category-desc">缓冲区溢出、ROP、堆漏洞</p>
+                                    <div class="category-skills">
+                                        <span class="skill-tag">栈溢出</span>
+                                        <span class="skill-tag">ROP</span>
+                                        <span class="skill-tag">堆利用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-category">
+                            <h3 class="category-title">解题流程</h3>
+                            <div class="solving-process">
+                                <div class="process-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-info">
+                                        <h4 class="step-title">阅读题目</h4>
+                                        <p class="step-desc">仔细阅读题目描述，理解要求和提示</p>
+                                    </div>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-info">
+                                        <h4 class="step-title">分析环境</h4>
+                                        <p class="step-desc">检查提供的文件、链接或服务</p>
+                                    </div>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-info">
+                                        <h4 class="step-title">寻找漏洞</h4>
+                                        <p class="step-desc">使用工具和技术寻找安全漏洞</p>
+                                    </div>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-info">
+                                        <h4 class="step-title">构造利用</h4>
+                                        <p class="step-desc">编写脚本或构造payload进行利用</p>
+                                    </div>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">5</div>
+                                    <div class="step-info">
+                                        <h4 class="step-title">获取Flag</h4>
+                                        <p class="step-desc">成功利用漏洞，获取Flag字符串</p>
+                                    </div>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">6</div>
+                                    <div class="step-info">
+                                        <h4 class="step-title">提交答案</h4>
+                                        <p class="step-desc">在提交框中输入正确的Flag</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-category">
+                            <h3 class="category-title">Flag格式说明</h3>
+                            <div class="flag-format">
+                                <div class="format-info">
+                                    <h4 class="format-title">标准格式</h4>
+                                    <code class="format-example">QHUCTF{...}</code>
+                                    <p class="format-desc">大部分题目的Flag都以"QHUCTF{"开头，以"}"结尾</p>
+                                </div>
+                                <div class="format-examples">
+                                    <h4 class="examples-title">示例</h4>
+                                    <div class="example-item">
+                                        <code class="example-flag">QHUCTF{welcome_to_ctf_world}</code>
+                                        <span class="example-desc">欢迎题目的Flag</span>
+                                    </div>
+                                    <div class="example-item">
+                                        <code class="example-flag">QHUCTF{sql_injection_is_dangerous}</code>
+                                        <span class="example-desc">SQL注入题目的Flag</span>
+                                    </div>
+                                    <div class="example-item">
+                                        <code class="example-flag">QHUCTF{reverse_engineering_master}</code>
+                                        <span class="example-desc">逆向工程题目的Flag</span>
+                                    </div>
+                                </div>
+                                <div class="format-tips">
+                                    <h4 class="tips-title">⚠️ 注意事项</h4>
+                                    <ul class="tips-list">
+                                        <li>Flag区分大小写，请严格按照找到的格式提交</li>
+                                        <li>某些题目可能有特殊的Flag格式，请仔细阅读题目说明</li>
+                                        <li>提交前请检查Flag的完整性，包括大括号</li>
+                                        <li>如果多次提交错误，可能会有时间惩罚</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 竞赛规则 -->
+                <section id="competition-rules" class="help-section" aria-labelledby="competition-rules-title">
+                    <h2 id="competition-rules-title" class="section-title">🏆 竞赛规则</h2>
+                    
+                    <div class="help-content">
+                        <div class="rules-overview">
+                            <div class="rule-card">
+                                <div class="rule-icon" aria-hidden="true">⏰</div>
+                                <h3 class="rule-title">时间规则</h3>
+                                <ul class="rule-list">
+                                    <li>竞赛有固定的开始和结束时间</li>
+                                    <li>迟到参赛不会获得额外时间</li>
+                                    <li>提前完成可以提前结束</li>
+                                    <li>系统时间为准，建议提前同步时间</li>
+                                </ul>
+                            </div>
+                            <div class="rule-card">
+                                <div class="rule-icon" aria-hidden="true">🎯</div>
+                                <h3 class="rule-title">评分规则</h3>
+                                <ul class="rule-list">
+                                    <li>每道题目有基础分值</li>
+                                    <li>解题时间越短，加成分越高</li>
+                                    <li>解题人数影响题目分值</li>
+                                    <li>错误提交可能导致扣分</li>
+                                </ul>
+                            </div>
+                            <div class="rule-card">
+                                <div class="rule-icon" aria-hidden="true">👥</div>
+                                <h3 class="rule-title">团队规则</h3>
+                                <ul class="rule-list">
+                                    <li>团队最多4人参与</li>
+                                    <li>需要指定一名队长</li>
+                                    <li>团队成员共享题目进度</li>
+                                    <li>最终成绩为团队总分</li>
+                                </ul>
+                            </div>
+                            <div class="rule-card">
+                                <div class="rule-icon" aria-hidden="true">🚫</div>
+                                <h3 class="rule-title">禁止行为</h3>
+                                <ul class="rule-list">
+                                    <li>攻击竞赛平台基础设施</li>
+                                    <li>与其他队伍分享答案</li>
+                                    <li>使用自动化脚本刷分</li>
+                                    <li>恶意干扰其他参赛者</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="scoring-details">
+                            <h3 class="details-title">详细评分机制</h3>
+                            <div class="scoring-formula">
+                                <div class="formula-card">
+                                    <h4 class="formula-title">基础分值</h4>
+                                    <div class="formula-content">
+                                        <p class="formula-text">根据题目难度设定：</p>
+                                        <ul class="difficulty-scores">
+                                            <li><span class="difficulty easy">简单</span> 100-200分</li>
+                                            <li><span class="difficulty medium">中等</span> 300-500分</li>
+                                            <li><span class="difficulty hard">困难</span> 600-800分</li>
+                                            <li><span class="difficulty expert">专家</span> 900-1000分</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="formula-card">
+                                    <h4 class="formula-title">时间加成</h4>
+                                    <div class="formula-content">
+                                        <p class="formula-text">解题时间越短，加成越高：</p>
+                                        <div class="time-bonus">
+                                            <div class="bonus-item">
+                                                <span class="bonus-time">前10%</span>
+                                                <span class="bonus-multiplier">×1.5</span>
+                                            </div>
+                                            <div class="bonus-item">
+                                                <span class="bonus-time">前25%</span>
+                                                <span class="bonus-multiplier">×1.3</span>
+                                            </div>
+                                            <div class="bonus-item">
+                                                <span class="bonus-time">前50%</span>
+                                                <span class="bonus-multiplier">×1.1</span>
+                                            </div>
+                                            <div class="bonus-item">
+                                                <span class="bonus-time">其他</span>
+                                                <span class="bonus-multiplier">×1.0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="formula-card">
+                                    <h4 class="formula-title">动态调整</h4>
+                                    <div class="formula-content">
+                                        <p class="formula-text">根据解题人数动态调整分值：</p>
+                                        <div class="dynamic-scoring">
+                                            <div class="scoring-range">
+                                                <span class="range-label">解题率 &lt; 10%</span>
+                                                <span class="range-bonus">+50%</span>
+                                            </div>
+                                            <div class="scoring-range">
+                                                <span class="range-label">解题率 10-30%</span>
+                                                <span class="range-bonus">+25%</span>
+                                            </div>
+                                            <div class="scoring-range">
+                                                <span class="range-label">解题率 30-60%</span>
+                                                <span class="range-bonus">+0%</span>
+                                            </div>
+                                            <div class="scoring-range">
+                                                <span class="range-label">解题率 &gt; 60%</span>
+                                                <span class="range-bonus">-10%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 账户管理 -->
+                <section id="account-management" class="help-section" aria-labelledby="account-management-title">
+                    <h2 id="account-management-title" class="section-title">👤 账户管理</h2>
+                    
+                    <div class="help-content">
+                        <div class="account-features">
+                            <div class="feature-section">
+                                <h3 class="feature-title">个人资料管理</h3>
+                                <div class="feature-items">
+                                    <div class="feature-item">
+                                        <div class="item-icon" aria-hidden="true">📷</div>
+                                        <div class="item-content">
+                                            <h4 class="item-title">头像设置</h4>
+                                            <p class="item-desc">上传个人头像，支持JPG、PNG格式，大小不超过2MB</p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-item">
+                                        <div class="item-icon" aria-hidden="true">📝</div>
+                                        <div class="item-content">
+                                            <h4 class="item-title">个人简介</h4>
+                                            <p class="item-desc">编写个人简介，展示技术背景和兴趣方向</p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-item">
+                                        <div class="item-icon" aria-hidden="true">🏷️</div>
+                                        <div class="item-content">
+                                            <h4 class="item-title">技能标签</h4>
+                                            <p class="item-desc">添加技能标签，如Web安全、逆向工程等</p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-item">
+                                        <div class="item-icon" aria-hidden="true">🎓</div>
+                                        <div class="item-content">
+                                            <h4 class="item-title">教育背景</h4>
+                                            <p class="item-desc">填写学校信息和专业背景（可选）</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="feature-section">
+                                <h3 class="feature-title">安全设置</h3>
+                                <div class="security-options">
+                                    <div class="security-item">
+                                        <div class="security-header">
+                                            <div class="security-icon" aria-hidden="true">🔐</div>
+                                            <h4 class="security-title">密码管理</h4>
+                                        </div>
+                                        <div class="security-content">
+                                            <p class="security-desc">定期更换密码，使用强密码策略</p>
+                                            <div class="password-requirements">
+                                                <h5 class="requirements-title">密码要求：</h5>
+                                                <ul class="requirements-list">
+                                                    <li>至少8个字符</li>
+                                                    <li>包含大小写字母</li>
+                                                    <li>包含数字</li>
+                                                    <li>包含特殊字符</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="security-item">
+                                        <div class="security-header">
+                                            <div class="security-icon" aria-hidden="true">📧</div>
+                                            <h4 class="security-title">邮箱验证</h4>
+                                        </div>
+                                        <div class="security-content">
+                                            <p class="security-desc">验证邮箱地址，确保账户安全</p>
+                                            <div class="verification-steps">
+                                                <ol class="steps-list">
+                                                    <li>点击"发送验证邮件"</li>
+                                                    <li>查收邮箱中的验证邮件</li>
+                                                    <li>点击邮件中的验证链接</li>
+                                                    <li>完成邮箱验证</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="security-item">
+                                        <div class="security-header">
+                                            <div class="security-icon" aria-hidden="true">🔒</div>
+                                            <h4 class="security-title">隐私设置</h4>
+                                        </div>
+                                        <div class="security-content">
+                                            <p class="security-desc">控制个人信息的可见性</p>
+                                            <div class="privacy-options">
+                                                <div class="privacy-option">
+                                                    <span class="option-name">个人资料可见性</span>
+                                                    <span class="option-desc">公开 / 仅好友 / 私密</span>
+                                                </div>
+                                                <div class="privacy-option">
+                                                    <span class="option-name">解题记录可见性</span>
+                                                    <span class="option-desc">公开 / 仅好友 / 私密</span>
+                                                </div>
+                                                <div class="privacy-option">
+                                                    <span class="option-name">排行榜显示</span>
+                                                    <span class="option-desc">显示 / 隐藏</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="feature-section">
+                                <h3 class="feature-title">学习统计</h3>
+                                <div class="stats-overview">
+                                    <div class="stats-card">
+                                        <div class="stats-icon" aria-hidden="true">📊</div>
+                                        <h4 class="stats-title">解题统计</h4>
+                                        <p class="stats-desc">查看各类题目的解题数量和正确率</p>
+                                    </div>
+                                    <div class="stats-card">
+                                        <div class="stats-icon" aria-hidden="true">📈</div>
+                                        <h4 class="stats-title">进度跟踪</h4>
+                                        <p class="stats-desc">跟踪学习进度和技能发展趋势</p>
+                                    </div>
+                                    <div class="stats-card">
+                                        <div class="stats-icon" aria-hidden="true">🏅</div>
+                                        <h4 class="stats-title">成就系统</h4>
+                                        <p class="stats-desc">解锁各种成就徽章和里程碑</p>
+                                    </div>
+                                    <div class="stats-card">
+                                        <div class="stats-icon" aria-hidden="true">📅</div>
+                                        <h4 class="stats-title">活动历史</h4>
+                                        <p class="stats-desc">查看参与的竞赛和活动记录</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 技术支持 -->
+                <section id="technical-support" class="help-section" aria-labelledby="technical-support-title">
+                    <h2 id="technical-support-title" class="section-title">🔧 技术支持</h2>
+                    
+                    <div class="help-content">
+                        <div class="faq-section">
+                            <h3 class="faq-title">常见问题 FAQ</h3>
+                            <div class="faq-list">
+                                <details class="faq-item">
+                                    <summary class="faq-question">
+                                        <span class="question-icon" aria-hidden="true">❓</span>
+                                        <span class="question-text">忘记密码怎么办？</span>
+                                    </summary>
+                                    <div class="faq-answer">
+                                        <p>如果忘记密码，可以通过以下步骤重置：</p>
+                                        <ol>
+                                            <li>点击登录页面的"忘记密码"链接</li>
+                                            <li>输入注册时使用的邮箱地址</li>
+                                            <li>查收邮箱中的密码重置邮件</li>
+                                            <li>点击邮件中的重置链接</li>
+                                            <li>设置新密码并确认</li>
+                                        </ol>
+                                        <p><strong>注意：</strong>重置链接有效期为24小时，请及时使用。</p>
+                                    </div>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary class="faq-question">
+                                        <span class="question-icon" aria-hidden="true">❓</span>
+                                        <span class="question-text">为什么提交的Flag显示错误？</span>
+                                    </summary>
+                                    <div class="faq-answer">
+                                        <p>Flag提交错误可能有以下原因：</p>
+                                        <ul>
+                                            <li><strong>格式错误：</strong>确保Flag包含完整的前缀和后缀（如QHUCTF{...}）</li>
+                                            <li><strong>大小写错误：</strong>Flag区分大小写，请严格按照找到的格式提交</li>
+                                            <li><strong>多余字符：</strong>检查是否包含多余的空格或换行符</li>
+                                            <li><strong>解题错误：</strong>重新检查解题过程，可能存在理解偏差</li>
+                                        </ul>
+                                        <p><strong>建议：</strong>仔细阅读题目描述，确认Flag格式要求。</p>
+                                    </div>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary class="faq-question">
+                                        <span class="question-icon" aria-hidden="true">❓</span>
+                                        <span class="question-text">网页加载缓慢或无法访问？</span>
+                                    </summary>
+                                    <div class="faq-answer">
+                                        <p>遇到网页访问问题，请尝试以下解决方法：</p>
+                                        <div class="troubleshooting-steps">
+                                            <div class="step-group">
+                                                <h4>基础排查：</h4>
+                                                <ul>
+                                                    <li>检查网络连接是否正常</li>
+                                                    <li>尝试刷新页面（Ctrl+F5强制刷新）</li>
+                                                    <li>清除浏览器缓存和Cookie</li>
+                                                    <li>尝试使用其他浏览器</li>
+                                                </ul>
+                                            </div>
+                                            <div class="step-group">
+                                                <h4>高级排查：</h4>
+                                                <ul>
+                                                    <li>检查防火墙和安全软件设置</li>
+                                                    <li>尝试使用无痕/隐私模式</li>
+                                                    <li>禁用浏览器扩展</li>
+                                                    <li>检查DNS设置</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <p><strong>仍无法解决？</strong>请联系技术支持，提供详细的错误信息。</p>
+                                    </div>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary class="faq-question">
+                                        <span class="question-icon" aria-hidden="true">❓</span>
+                                        <span class="question-text">如何参加团队竞赛？</span>
+                                    </summary>
+                                    <div class="faq-answer">
+                                        <p>参加团队竞赛需要以下步骤：</p>
+                                        <div class="team-process">
+                                            <div class="process-option">
+                                                <h4>创建团队：</h4>
+                                                <ol>
+                                                    <li>进入竞赛页面，点击"创建团队"</li>
+                                                    <li>填写团队名称和描述</li>
+                                                    <li>设置团队密码（可选）</li>
+                                                    <li>邀请其他成员加入</li>
+                                                </ol>
+                                            </div>
+                                            <div class="process-option">
+                                                <h4>加入团队：</h4>
+                                                <ol>
+                                                    <li>获取团队邀请码或链接</li>
+                                                    <li>点击"加入团队"</li>
+                                                    <li>输入邀请码或团队密码</li>
+                                                    <li>等待队长确认</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                        <p><strong>注意：</strong>团队最多4人，报名截止后不能更改成员。</p>
+                                    </div>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary class="faq-question">
+                                        <span class="question-icon" aria-hidden="true">❓</span>
+                                        <span class="question-text">账户被误封怎么申诉？</span>
+                                    </summary>
+                                    <div class="faq-answer">
+                                        <p>如果认为账户被误封，可以通过以下方式申诉：</p>
+                                        <div class="appeal-process">
+                                            <div class="appeal-step">
+                                                <h4>📧 邮件申诉：</h4>
+                                                <p>发送邮件至 <a href="mailto:appeal@qhuctf.com">appeal@qhuctf.com</a></p>
+                                                <p>邮件需包含：用户名、封禁时间、申诉理由、相关证据</p>
+                                            </div>
+                                            <div class="appeal-step">
+                                                <h4>📋 在线申诉：</h4>
+                                                <p>填写申诉表单，详细说明情况</p>
+                                                <p>上传相关证据文件（截图、日志等）</p>
+                                            </div>
+                                        </div>
+                                        <p><strong>处理时间：</strong>一般在7-15个工作日内给出回复。</p>
+                                    </div>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary class="faq-question">
+                                        <span class="question-icon" aria-hidden="true">❓</span>
+                                        <span class="question-text">如何获得更多学习资源？</span>
+                                    </summary>
+                                    <div class="faq-answer">
+                                        <p>平台提供多种学习资源：</p>
+                                        <div class="resources-grid">
+                                            <div class="resource-item">
+                                                <h4>📚 题目解析</h4>
+                                                <p>每道题目都有详细的解题思路和技术分析</p>
+                                            </div>
+                                            <div class="resource-item">
+                                                <h4>🎥 视频教程</h4>
+                                                <p>观看专家录制的技术讲解视频</p>
+                                            </div>
+                                            <div class="resource-item">
+                                                <h4>📖 技术文档</h4>
+                                                <p>阅读各类安全技术的详细文档</p>
+                                            </div>
+                                            <div class="resource-item">
+                                                <h4>💬 社区讨论</h4>
+                                                <p>参与技术讨论，与其他用户交流</p>
+                                            </div>
+                                        </div>
+                                        <p><strong>推荐：</strong>关注平台公告，获取最新的学习资源更新。</p>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+
+                        <div class="troubleshooting-guide">
+                            <h3 class="guide-title">故障排除指南</h3>
+                            <div class="troubleshooting-categories">
+                                <div class="trouble-category">
+                                    <h4 class="trouble-title">🌐 网络问题</h4>
+                                    <div class="trouble-solutions">
+                                        <div class="solution-item">
+                                            <h5 class="solution-title">连接超时</h5>
+                                            <ul class="solution-steps">
+                                                <li>检查网络连接状态</li>
+                                                <li>尝试切换网络环境</li>
+                                                <li>联系网络管理员</li>
+                                            </ul>
+                                        </div>
+                                        <div class="solution-item">
+                                            <h5 class="solution-title">页面加载慢</h5>
+                                            <ul class="solution-steps">
+                                                <li>清除浏览器缓存</li>
+                                                <li>关闭其他占用带宽的应用</li>
+                                                <li>尝试在网络较好的时段访问</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="trouble-category">
+                                    <h4 class="trouble-title">💻 浏览器问题</h4>
+                                    <div class="trouble-solutions">
+                                        <div class="solution-item">
+                                            <h5 class="solution-title">兼容性问题</h5>
+                                            <ul class="solution-steps">
+                                                <li>使用Chrome、Firefox等现代浏览器</li>
+                                                <li>更新浏览器到最新版本</li>
+                                                <li>启用JavaScript和Cookie</li>
+                                            </ul>
+                                        </div>
+                                        <div class="solution-item">
+                                            <h5 class="solution-title">功能异常</h5>
+                                            <ul class="solution-steps">
+                                                <li>禁用浏览器扩展</li>
+                                                <li>使用无痕模式测试</li>
+                                                <li>重置浏览器设置</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="trouble-category">
+                                    <h4 class="trouble-title">🔐 账户问题</h4>
+                                    <div class="trouble-solutions">
+                                        <div class="solution-item">
+                                            <h5 class="solution-title">登录失败</h5>
+                                            <ul class="solution-steps">
+                                                <li>确认用户名和密码正确</li>
+                                                <li>检查账户是否被锁定</li>
+                                                <li>尝试密码重置</li>
+                                            </ul>
+                                        </div>
+                                        <div class="solution-item">
+                                            <h5 class="solution-title">功能受限</h5>
+                                            <ul class="solution-steps">
+                                                <li>完成邮箱验证</li>
+                                                <li>检查账户状态</li>
+                                                <li>联系客服咨询</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 联系我们 -->
+                <section id="contact-us" class="help-section" aria-labelledby="contact-us-title">
+                    <h2 id="contact-us-title" class="section-title">📞 联系我们</h2>
+                    
+                    <div class="help-content">
+                        <div class="contact-intro">
+                            <p>我们致力于为用户提供最好的服务体验。如果您有任何问题、建议或需要帮助，请随时联系我们。</p>
+                        </div>
+
+                        <div class="contact-methods">
+                            <div class="contact-grid">
+                                <div class="contact-card primary">
+                                    <div class="contact-header">
+                                        <div class="contact-icon" aria-hidden="true">📧</div>
+                                        <h3 class="contact-title">邮件支持</h3>
+                                    </div>
+                                    <div class="contact-content">
+                                        <div class="contact-item">
+                                            <strong>技术支持：</strong>
+                                            <a href="mailto:support@qhuctf.com" class="contact-link">support@qhuctf.com</a>
+                                        </div>
+                                        <div class="contact-item">
+                                            <strong>竞赛咨询：</strong>
+                                            <a href="mailto:competition@qhuctf.com" class="contact-link">competition@qhuctf.com</a>
+                                        </div>
+                                        <div class="contact-item">
+                                            <strong>合作洽谈：</strong>
+                                            <a href="mailto:business@qhuctf.com" class="contact-link">business@qhuctf.com</a>
+                                        </div>
+                                        <div class="response-time">
+                                            <span class="time-icon" aria-hidden="true">⏰</span>
+                                            <span class="time-text">24小时内回复</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="contact-card">
+                                    <div class="contact-header">
+                                        <div class="contact-icon" aria-hidden="true">💬</div>
+                                        <h3 class="contact-title">在线客服</h3>
+                                    </div>
+                                    <div class="contact-content">
+                                        <p class="service-desc">实时在线客服，快速解决您的问题</p>
+                                        <div class="service-hours">
+                                            <div class="hours-item">
+                                                <span class="hours-label">工作日：</span>
+                                                <span class="hours-time">9:00 - 18:00</span>
+                                            </div>
+                                            <div class="hours-item">
+                                                <span class="hours-label">周末：</span>
+                                                <span class="hours-time">10:00 - 16:00</span>
+                                            </div>
+                                        </div>
+                                        <button class="contact-button" type="button">
+                                            <span class="button-icon" aria-hidden="true">💬</span>
+                                            <span class="button-text">开始对话</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="contact-card">
+                                    <div class="contact-header">
+                                        <div class="contact-icon" aria-hidden="true">🐛</div>
+                                        <h3 class="contact-title">问题反馈</h3>
+                                    </div>
+                                    <div class="contact-content">
+                                        <p class="feedback-desc">发现Bug或有改进建议？我们很乐意听取您的意见</p>
+                                        <div class="feedback-types">
+                                            <div class="feedback-type">
+                                                <span class="type-icon" aria-hidden="true">🐛</span>
+                                                <span class="type-text">Bug报告</span>
+                                            </div>
+                                            <div class="feedback-type">
+                                                <span class="type-icon" aria-hidden="true">💡</span>
+                                                <span class="type-text">功能建议</span>
+                                            </div>
+                                            <div class="feedback-type">
+                                                <span class="type-icon" aria-hidden="true">⭐</span>
+                                                <span class="type-text">用户体验</span>
+                                            </div>
+                                        </div>
+                                        <button class="contact-button secondary" type="button">
+                                            <span class="button-icon" aria-hidden="true">📝</span>
+                                            <span class="button-text">提交反馈</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="contact-card">
+                                    <div class="contact-header">
+                                        <div class="contact-icon" aria-hidden="true">👥</div>
+                                        <h3 class="contact-title">社区交流</h3>
+                                    </div>
+                                    <div class="contact-content">
+                                        <p class="community-desc">加入我们的社区，与其他安全爱好者交流学习</p>
+                                        <div class="community-platforms">
+                                            <div class="platform-item">
+                                                <span class="platform-icon" aria-hidden="true">💬</span>
+                                                <span class="platform-name">用户论坛</span>
+                                            </div>
+                                            <div class="platform-item">
+                                                <span class="platform-icon" aria-hidden="true">📱</span>
+                                                <span class="platform-name">QQ群</span>
+                                            </div>
+                                            <div class="platform-item">
+                                                <span class="platform-icon" aria-hidden="true">💻</span>
+                                                <span class="platform-name">技术博客</span>
+                                            </div>
+                                        </div>
+                                        <button class="contact-button" type="button">
+                                            <span class="button-icon" aria-hidden="true">🚀</span>
+                                            <span class="button-text">加入社区</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-form-section">
+                            <h3 class="form-title">快速联系表单</h3>
+                            <form class="contact-form" action="#" method="post" action="#" method="post">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="contact-name" class="form-label">姓名 *</label>
+                                        <input type="text" 
+                                               id="contact-name" 
+                                               name="name" 
+                                               class="form-input" 
+                                               required 
+                                               placeholder="请输入您的姓名">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contact-email" class="form-label">邮箱 *</label>
+                                        <input type="email" 
+                                               id="contact-email" 
+                                               name="email" 
+                                               class="form-input" 
+                                               required 
+                                               placeholder="请输入您的邮箱地址">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-subject" class="form-label">主题 *</label>
+                                    <select id="contact-subject" name="subject" class="form-select" required>
+                                        <option value="">请选择问题类型</option>
+                                        <option value="technical">技术支持</option>
+                                        <option value="account">账户问题</option>
+                                        <option value="competition">竞赛咨询</option>
+                                        <option value="bug">Bug报告</option>
+                                        <option value="suggestion">功能建议</option>
+                                        <option value="other">其他问题</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-message" class="form-label">详细描述 *</label>
+                                    <textarea id="contact-message" 
+                                              name="message" 
+                                              class="form-textarea" 
+                                              rows="6" 
+                                              required 
+                                              placeholder="请详细描述您遇到的问题或建议..."></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="submit-button">
+                                        <span class="button-icon" aria-hidden="true">📤</span>
+                                        <span class="button-text">发送消息</span>
+                                    </button>
+                                    <button type="reset" class="reset-button">
+                                        <span class="button-text">重置表单</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="service-commitment">
+                            <h3 class="commitment-title">我们的服务承诺</h3>
+                            <div class="commitment-grid">
+                                <div class="commitment-item">
+                                    <div class="commitment-icon" aria-hidden="true">⚡</div>
+                                    <h4 class="commitment-name">快速响应</h4>
+                                    <p class="commitment-desc">工作日24小时内回复您的咨询</p>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-icon" aria-hidden="true">🎯</div>
+                                    <h4 class="commitment-name">专业解答</h4>
+                                    <p class="commitment-desc">技术专家提供专业的解决方案</p>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-icon" aria-hidden="true">🔄</div>
+                                    <h4 class="commitment-name">持续跟进</h4>
+                                    <p class="commitment-desc">跟踪问题解决进度，确保满意</p>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-icon" aria-hidden="true">🔒</div>
+                                    <h4 class="commitment-name">隐私保护</h4>
+                                    <p class="commitment-desc">严格保护用户隐私和数据安全</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- 快速导航 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">快速导航</h3>
+                    <ul class="footer-links">
+                        <li><a href="../core/index.html" class="footer-link">首页</a></li>
+                        <li><a href="../core/challenges.html" class="footer-link">题目列表</a></li>
+                        <li><a href="scoreboard.html" class="footer-link">排行榜</a></li>
+                        <li><a href="../core/login.html" class="footer-link">用户登录</a></li>
+                    </ul>
+                </div>
+
+                <!--

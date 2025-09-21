@@ -1,0 +1,107 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jquery": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "globals": {
+    "bootstrap": "readonly",
+    "$": "readonly",
+    "jQuery": "readonly"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-unused-vars": ["warn"],
+    "no-console": ["warn"],
+    "no-debugger": ["error"],
+    "no-alert": ["warn"],
+    "prefer-const": ["error"],
+    "no-var": ["error"],
+    "arrow-spacing": ["error"],
+    "comma-dangle": ["error", "never"],
+    "space-before-function-paren": ["error", "always"],
+    "keyword-spacing": ["error"],
+    "space-infix-ops": ["error"],
+    "eol-last": ["error"],
+    "no-trailing-spaces": ["error"],
+    "no-multiple-empty-lines": ["error", { "max": 2 }],
+    "object-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "never"],
+    "computed-property-spacing": ["error", "never"],
+    "func-call-spacing": ["error", "never"],
+    "key-spacing": ["error"],
+    "comma-spacing": ["error"],
+    "no-multi-spaces": ["error"],
+    "space-in-parens": ["error", "never"],
+    "space-before-blocks": ["error"],
+    "brace-style": ["error", "1tbs"],
+    "curly": ["error", "all"],
+    "dot-notation": ["error"],
+    "eqeqeq": ["error", "always"],
+    "no-eval": ["error"],
+    "no-implied-eval": ["error"],
+    "no-new-func": ["error"],
+    "no-script-url": ["error"],
+    "radix": ["error"],
+    "yoda": ["error"],
+    "camelcase": ["error"],
+    "new-cap": ["error"],
+    "no-array-constructor": ["error"],
+    "no-new-object": ["error"],
+    "no-underscore-dangle": ["off"],
+    "consistent-return": ["error"],
+    "default-case": ["error"],
+    "guard-for-in": ["error"],
+    "no-caller": ["error"],
+    "no-else-return": ["error"],
+    "no-eq-null": ["error"],
+    "no-floating-decimal": ["error"],
+    "no-self-compare": ["error"],
+    "no-throw-literal": ["error"],
+    "no-void": ["error"],
+    "wrap-iife": ["error"],
+    "strict": ["error", "global"]
+  },
+  "overrides": [
+    {
+      "files": ["tools/**/*.js"],
+      "env": {
+        "node": true,
+        "browser": false
+      },
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["src/assets/js/**/*.js"],
+      "env": {
+        "browser": true,
+        "node": false
+      },
+      "globals": {
+        "bootstrap": "readonly",
+        "$": "readonly",
+        "jQuery": "readonly"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "dist/",
+    "node_modules/",
+    "*.min.js",
+    "*.backup.js",
+    "reports/"
+  ]
+}
